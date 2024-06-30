@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Ciclista\desktop.ini" />
+    <None Remove="desktop.ini" />
+    <None Remove="Funcionario\desktop.ini" />
+    <None Remove="Funcionario\Validacao\desktop.ini" />
+    <None Remove="MeioDePagamento\desktop.ini" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Ciclista\Validacao\" />
+    <Folder Include="Funcionario\Validacao\" />
+  </ItemGroup>
+
+</Project>
