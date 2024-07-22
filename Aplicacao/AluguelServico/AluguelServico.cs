@@ -4,7 +4,7 @@
 	{
 		public string MetodoTeste()
 		{
-			return "bla NET 8 com deploy AUTO";
+			return "teste sonar";
 		}
 	}
 }
