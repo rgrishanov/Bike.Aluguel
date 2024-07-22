@@ -4,7 +4,7 @@
 	{
 		public string MetodoTeste()
 		{
-			return "bla";
+			return "bla NET 8 com deploy AUTO";
 		}
 	}
 }
