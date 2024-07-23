@@ -1,6 +1,0 @@
-@BikeApi_HostAddress = http://localhost:5183
-
-GET {{BikeApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
