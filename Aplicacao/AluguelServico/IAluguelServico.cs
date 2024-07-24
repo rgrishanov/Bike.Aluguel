@@ -1,4 +1,4 @@
-﻿namespace Bike.Aplicacao.AluguelServico
+﻿namespace BikeApi.Aplicacao.AluguelServico
 {
 	public interface IAluguelServico
 	{

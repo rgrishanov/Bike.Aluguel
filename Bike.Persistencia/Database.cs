@@ -1,4 +1,4 @@
-﻿namespace Bike.Persistencia
+﻿namespace BikeApi.Persistencia
 {
 	public static class Database
 	{

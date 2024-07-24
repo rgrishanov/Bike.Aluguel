@@ -1,14 +1,13 @@
-﻿namespace Bike.Dominio.Funcionario
+﻿namespace BikeApi.Dominio.Funcionario
 {
 	public class Funcionario
 	{
-		public string Matricula { get; set; }
-		public string Senha { get; set; }
-		public string ConfirmacaoSenha { get; set; }
-		public string Email { get; set; }
-		public string Nome { get; set; }
+		public required string Matricula { get; set; }
+		public required string Senha { get; set; }
+		public required string Email { get; set; }
+		public required string Nome { get; set; }
 		public int Idade { get; set; }
-		public string Funcao { get; set; }
-		public string Cpf { get; set; }
+		public required string Funcao { get; set; }
+		public required string Cpf { get; set; }
 	}
 }

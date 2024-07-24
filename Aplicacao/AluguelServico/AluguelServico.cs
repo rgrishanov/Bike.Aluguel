@@ -1,10 +1,10 @@
-﻿namespace Bike.Aplicacao.AluguelServico
+﻿namespace BikeApi.Aplicacao.AluguelServico
 {
 	public class AluguelServico : IAluguelServico
 	{
 		public string MetodoTeste()
 		{
-			return "tirei weather";
+			return "teste swagger";
 		}
 	}
 }

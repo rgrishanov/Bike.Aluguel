@@ -1,4 +1,5 @@
-using Bike.Aplicacao.AluguelServico;
+using Bike.Dto.CadastroCiclista;
+using BikeApi.Aplicacao.AluguelServico;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BikeApi.Controllers
@@ -22,7 +23,8 @@ namespace BikeApi.Controllers
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPost("ciclista")]
 		[ProducesResponseType(201)]
-		public OkObjectResult CadastrarCiclista() {
+		public OkObjectResult CadastrarCiclista(CadastroCiclistaDto dto)
+		{
 
 			return Ok(_aluguelServico.MetodoTeste());
 		}

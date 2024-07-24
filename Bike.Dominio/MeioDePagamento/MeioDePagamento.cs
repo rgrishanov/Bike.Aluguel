@@ -1,10 +1,10 @@
-﻿namespace Bike.Dominio.MeioDePagamento
+﻿namespace BikeApi.Dominio.MeioDePagamento
 {
 	public class MeioDePagamento
 	{
-		public string NomeTitular { get; set; }
-		public string Numero { get; set; }
+		public required string NomeTitular { get; set; }
+		public required string Numero { get; set; }
 		public DateTime Validade { get; set; }
-		public string Cvv { get; set; }
+		public required string Cvv { get; set; }
 	}
 }
