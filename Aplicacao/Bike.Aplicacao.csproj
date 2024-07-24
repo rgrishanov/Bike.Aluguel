@@ -10,4 +10,9 @@
     <None Remove="desktop.ini" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Bike.Dominio\Bike.Dominio.csproj" />
+    <ProjectReference Include="..\Bike.Dto\Bike.Dto.csproj" />
+  </ItemGroup>
+
 </Project>

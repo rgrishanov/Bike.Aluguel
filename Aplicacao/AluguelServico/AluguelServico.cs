@@ -1,10 +1,18 @@
-﻿namespace BikeApi.Aplicacao.AluguelServico
+﻿using Bike.Dto.CadastroCiclista;
+using BikeApi.Dominio.Ciclista;
+
+namespace BikeApi.Aplicacao.AluguelServico
 {
 	public class AluguelServico : IAluguelServico
 	{
-		public string MetodoTeste()
+		public void CadastrarCiclista(CadastroCiclistaDto dto)
 		{
-			return "teste swagger";
+			//var ciclista = new Ciclista()
+			//{
+			//	Nome = dto.Nome,
+			//	Idade = dto.Idade,
+			//	Genero = dto.Genero
+			//};
 		}
 	}
 }

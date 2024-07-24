@@ -1,7 +1,9 @@
-﻿namespace BikeApi.Aplicacao.AluguelServico
+﻿using Bike.Dto.CadastroCiclista;
+
+namespace BikeApi.Aplicacao.AluguelServico
 {
 	public interface IAluguelServico
 	{
-		public string MetodoTeste();
+		public void CadastrarCiclista(CadastroCiclistaDto dto);
 	}
 }

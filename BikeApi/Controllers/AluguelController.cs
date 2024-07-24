@@ -4,11 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BikeApi.Controllers
 {
+	/// <summary>
+	/// Controller de Aluguel
+	/// </summary>
 	[ApiController]
-	//[Route("aluguel")]
 	public class AluguelController : ControllerBase
 	{
 		private readonly IAluguelServico _aluguelServico;
+
+		/// <summary>
+		/// Microsserviço de Aluguel de Bicicletas
+		/// </summary>
+		/// <param name="aluguelServico"></param>
 		public AluguelController(IAluguelServico aluguelServico)
 		{
 			this._aluguelServico = aluguelServico;
@@ -23,10 +30,11 @@ namespace BikeApi.Controllers
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPost("ciclista")]
 		[ProducesResponseType(201)]
-		public OkObjectResult CadastrarCiclista(CadastroCiclistaDto dto)
+		public IActionResult CadastrarCiclista(CadastroCiclistaDto dto)
 		{
+			_aluguelServico.CadastrarCiclista(dto);
 
-			return Ok(_aluguelServico.MetodoTeste());
+			return StatusCode(201);
 		}
 
 	}

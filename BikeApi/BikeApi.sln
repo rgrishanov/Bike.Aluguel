@@ -9,12 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bike.Api", "Bike.Api.csproj
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bike.Aplicacao", "..\Aplicacao\Bike.Aplicacao.csproj", "{12C34D43-594B-4023-99E2-482C62E0B5F4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{62BB7C8C-DCA8-48C6-8979-7DBA79BC1AFD} = {62BB7C8C-DCA8-48C6-8979-7DBA79BC1AFD}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bike.Persistencia", "..\Bike.Persistencia\Bike.Persistencia.csproj", "{B060ED50-2970-4086-BCBD-F67CA1AE9604}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bike.Dominio", "..\Bike.Dominio\Bike.Dominio.csproj", "{62BB7C8C-DCA8-48C6-8979-7DBA79BC1AFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bike.Dto", "..\Bike.Dto\Bike.Dto.csproj", "{0899C4A6-2795-491E-8B00-35D54F1C05D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bike.Dto", "..\Bike.Dto\Bike.Dto.csproj", "{0899C4A6-2795-491E-8B00-35D54F1C05D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

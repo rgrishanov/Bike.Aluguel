@@ -1,4 +1,8 @@
-﻿namespace BikeApi.Dominio.Ciclista
+﻿using Bike.Dominio.Ciclista.Validacao;
+using Bike.Dominio.Validacao;
+using Bike.Dto.CadastroCiclista;
+
+namespace BikeApi.Dominio.Ciclista
 {
 	public class Ciclista
 	{
@@ -10,7 +14,29 @@
 		public required string Email { get; set; }
 		public required string UrlFotoDocumento { get; set; }
 		public required string Senha { get; set; }
-	}
+
+		public Ciclista(CiclistaDto dto)
+		{
+			Validador.Validar(dto, new CiclistaValidacao());
+
+			Nome = dto.Nome!;
+			Nascimento = dto.Nascimento!.Value;
+			Cpf = dto.Cpf!;
+			//Passaporte = new Passaporte
+			//{
+			//	Numero = dto.Passaporte!.Numero!,
+			//	Validade = dto.Passaporte.Validade,
+			//	Pais = dto.Passaporte.Pais!
+			//};
+			Nacionalidade = dto.Nacionalidade!;
+			Email = dto.Email!;
+			UrlFotoDocumento = dto.UrlFotoDocumento!;
+			Senha = dto.Senha!;
+
+			if (dto.Senha == null)
+				throw new System.Exception("Senha não pode ser nula");
+		}
+    }
 
 	public class Passaporte
 	{

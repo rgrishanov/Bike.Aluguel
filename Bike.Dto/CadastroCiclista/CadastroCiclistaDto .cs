@@ -2,7 +2,7 @@
 {
     public class CadastroCiclistaDto
     {
-        public CiclistaDto? Ciclista { get; set; }
+        public required CiclistaDto Ciclista { get; set; }
 		public MeioDePagamento? MeioDePagamento { get; set; }
 	}
 }
