@@ -12,7 +12,7 @@ namespace Bike.Dominio.Ciclista.Validacao
 
 			this.RuleFor(p => p.Validade).Cascade(CascadeMode.Stop)
 
-				.GreaterThan(new DateTime(1980, 1, 1))
+				.GreaterThan(new DateTime(1980, 1, 1, 0, 0, 0, DateTimeKind.Utc))
 				.WithMessage("Data de Validade do Passaporte deve ser preenchida")
 
 				.GreaterThan(DateTime.Now)

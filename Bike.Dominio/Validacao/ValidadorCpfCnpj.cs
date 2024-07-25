@@ -16,7 +16,7 @@ namespace Bike.Dominio.Validacao
 			int j, i, soma;
 			string soNumero;
 
-			soNumero = Regex.Replace(cpf, "[^0-9]", string.Empty);
+			soNumero = SoNumeros().Replace(cpf, string.Empty);
 
 			if (soNumero.Length == 11)
 			{
@@ -34,5 +34,8 @@ namespace Bike.Dominio.Validacao
 			else
 				return false;
 		}
+
+		[GeneratedRegex("[^0-9]")]
+		private static partial Regex SoNumeros();
 	}
 }

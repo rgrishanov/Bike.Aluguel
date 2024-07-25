@@ -54,4 +54,4 @@ app.Run();
 /// apenas uma "orelha" para poder colocar atribudo de excluir da cobertura
 /// </summary>
 [ExcludeFromCodeCoverage]
-public partial class Program { }
+public static partial class Program { }

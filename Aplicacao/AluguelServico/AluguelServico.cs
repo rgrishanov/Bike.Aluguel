@@ -39,27 +39,27 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 				throw new ArgumentException("Não foi possível enviar o e-mail de confirmação do cadastro.");
 
-			return this.MapearCiclistaParaDto(ciclista);
+			return MapearCiclistaParaDto(ciclista);
 		}
 
 		public ObterCiclistaDto AtivarCiclista(int idCiclista)
 		{
-			var ciclista = this.ObterCiclistaDominio(idCiclista);
+			var ciclista = ObterCiclistaDominio(idCiclista);
 			ciclista.AtivarCadastro();
 
 			// aqui teria algo sobre salvar no banco, mas sem banco já está tudo salvo na memória.
 
-			return this.MapearCiclistaParaDto(ciclista);
+			return MapearCiclistaParaDto(ciclista);
 		}
 
 		public ObterCiclistaDto ObterCiclista(int idCiclista)
 		{
-			return this.MapearCiclistaParaDto(this.ObterCiclistaDominio(idCiclista));
+			return MapearCiclistaParaDto(ObterCiclistaDominio(idCiclista));
 		}
 
 		public ObterCiclistaDto AlterarCiclista(int idCiclista, CiclistaDto dto)
 		{
-			var ciclista = this.ObterCiclistaDominio(idCiclista);
+			var ciclista = ObterCiclistaDominio(idCiclista);
 
 			ciclista.Alterar(dto);
 
@@ -70,12 +70,12 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 				throw new ArgumentException("Não foi possível enviar o e-mail de confirmação das Alterações do cadastro.");
 
-			return this.MapearCiclistaParaDto(this.ObterCiclistaDominio(idCiclista));
+			return MapearCiclistaParaDto(ObterCiclistaDominio(idCiclista));
 		}
 
 		public void AlterarMeioDePagamento(int idCiclista, MeioDePagamentoDto dto)
 		{
-			var ciclista = this.ObterCiclistaDominio(idCiclista);
+			var ciclista = ObterCiclistaDominio(idCiclista);
 			var meioPagamento = this.CriarMeioDePagamentoValidado(dto);
 
 			meioPagamento.SetarIdCiclista(ciclista.Id);
@@ -93,7 +93,7 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 		public void Alugar(int idCiclista, int idTranca)
 		{
-			var ciclista = this.ObterCiclistaDominio(idCiclista);
+			var ciclista = ObterCiclistaDominio(idCiclista);
 			var bikeNaTranca = _equipamento.ObterBicicletaNaTranca(idTranca);
 
 			if (ciclista.Status != "ATIVO")
@@ -145,10 +145,10 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 		#region Métodos privados
 
-		private Ciclista ObterCiclistaDominio(int idCiclista) =>
+		private static Ciclista ObterCiclistaDominio(int idCiclista) =>
 			Database.ObterCiclistaPorId(idCiclista) ?? throw new EntidadeInexistenteException($"Ciclista com id {idCiclista} não existe.");
 
-		private ObterCiclistaDto MapearCiclistaParaDto(Ciclista ciclista)
+		private static ObterCiclistaDto MapearCiclistaParaDto(Ciclista ciclista)
 		{
 			ObterCiclistaDto dto = new()
 			{

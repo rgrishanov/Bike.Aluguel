@@ -13,7 +13,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 {
 	public class AluguelServicoTeste
 	{
-		private readonly IAluguelServico _servico;
+		private readonly AluguelServico _servico;
 		private readonly Mock<IIntegracaoExternoServico> _integracaoExterna;
 		private readonly Mock<IIntegracaoEquipamentoServico> _equipamento;
 
@@ -37,7 +37,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 				Nome = "Ciclista Teste",
 				Email = "ciclista@email.com",
 				Nacionalidade = "BRASILEIRO",
-				Nascimento = new DateTime(1990, 1, 1),
+				Nascimento = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc),
 				Senha = "123456",
 				SenhaConfirmacao = "123456",
 				UrlFotoDocumento = "http://url.com/foto"
@@ -130,7 +130,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 				Nome = "Ciclista Teste Alterado",
 				Email = "ciclista@email.alterado.com",
 				Nacionalidade = "BRASILEIRO",
-				Nascimento = new DateTime(1992, 6, 6),
+				Nascimento = new DateTime(1992, 6, 6, 0, 0, 0, DateTimeKind.Utc),
 				Senha = "123456!@#",
 				SenhaConfirmacao = "123456!@#",
 				UrlFotoDocumento = "http://url.com/foto/Alterada.jpg"
@@ -186,7 +186,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 				Nome = "Ciclista Teste",
 				Email = "ciclista@email.existente.com",
 				Nacionalidade = "BRASILEIRO",
-				Nascimento = new DateTime(1990, 1, 1),
+				Nascimento = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc),
 				Senha = "123456",
 				SenhaConfirmacao = "123456",
 				UrlFotoDocumento = "http://url.com/foto"

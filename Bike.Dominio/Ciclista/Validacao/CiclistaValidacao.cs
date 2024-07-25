@@ -13,13 +13,14 @@ namespace Bike.Dominio.Ciclista.Validacao
 
 			this.RuleFor(x => x.Nascimento)
 				.LessThan(DateTime.Now)
-				.WithMessage("Data de Nascimento do Ciclista deve ser anterior a hoje").Unless(x => x.Nascimento < new DateTime(1900, 1, 1))
+				.WithMessage("Data de Nascimento do Ciclista deve ser anterior a hoje").Unless(x => x.Nascimento < new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc))
 
-				.GreaterThan(new DateTime(1900, 1, 1))
+				.GreaterThan(new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc))
 				.WithMessage("Data de Nascimento do Ciclista deve ser no século 20 ou 21");
 
 			// só valida CPF pra Brasileiros
-			this.When(x => !string.IsNullOrEmpty(x.Nacionalidade) && x.Nacionalidade.ToUpperInvariant().Equals("BRASILEIRO"), () => {
+			this.When(x => !string.IsNullOrEmpty(x.Nacionalidade) && x.Nacionalidade.ToUpperInvariant().Equals("BRASILEIRO"), () =>
+			{
 				this.RuleFor(x => x.Cpf).Cascade(CascadeMode.Stop)
 				.NotEmpty()
 				.WithMessage("CPF do Ciclista não pode ser vazio")
@@ -29,7 +30,8 @@ namespace Bike.Dominio.Ciclista.Validacao
 			});
 
 			// só valida Passaporte pra Estrangeiros
-			this.When(x => !string.IsNullOrEmpty(x.Nacionalidade) && x.Nacionalidade.ToUpperInvariant().Equals("ESTRANGEIRO"), () => {
+			this.When(x => !string.IsNullOrEmpty(x.Nacionalidade) && x.Nacionalidade.ToUpperInvariant().Equals("ESTRANGEIRO"), () =>
+			{
 				this.RuleFor(x => x.Passaporte)
 				.NotEmpty()
 				.WithMessage("Dados do Passaporte do Ciclista Estrangeiro devem ser informados");
