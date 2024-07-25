@@ -8,16 +8,7 @@ namespace BikeApi.Aplicacao.AluguelServico
 		{
 			// temp até integrar
 
-			if (1 == 422) { 
-				throw new ArgumentException("Numero da Tranca é Invalido.");
-			}
-
-			if (1 == 404)
-			{
-				throw new ArgumentException($"Tranca {idTranca} está vazia (sem bicicleta).");
-			}
-
-			var retorno = new BicicletaNaTrancaDto
+			return new BicicletaNaTrancaDto
 			{
 				Id = 30,
 				Ano = "2021",
@@ -25,9 +16,7 @@ namespace BikeApi.Aplicacao.AluguelServico
 				Modelo = "Mountain 9000",
 				Numero = 123,
 				Status = "status"
-			};
-
-			return retorno;
+			};		
 		}
 
 		public void AlterarStatusBicicleta(int idBicicleta, string novoStatus)

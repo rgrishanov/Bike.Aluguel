@@ -1,5 +1,6 @@
 ﻿using Bike.Dominio;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.Json;
 
@@ -8,6 +9,7 @@ namespace Bike.Api.ControleErros
 	/// <summary>
 	/// Filtra exceções pra retornar um json com a mensagem de erro amigável
 	/// </summary>
+	[ExcludeFromCodeCoverage]
 	public class ExceptionFilter : IExceptionFilter
 	{
 		/// <summary>

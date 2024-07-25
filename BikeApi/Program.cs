@@ -2,7 +2,9 @@ using Bike.Api.ControleErros;
 using BikeApi.Aplicacao.AluguelServico;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,3 +49,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+/// <summary>
+/// apenas uma "orelha" para poder colocar atribudo de excluir da cobertura
+/// </summary>
+[ExcludeFromCodeCoverage]
+public partial class Program { }
