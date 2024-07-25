@@ -14,6 +14,6 @@ namespace BikeApi.Aplicacao.AluguelServico
 		
 		public void AlterarMeioDePagamento(int idCiclista, MeioDePagamentoDto dto);
 
-		public void Alugar(int ciclista, int trancaInicio);
+		public void Alugar(int idCiclista, int idTranca);
 	}
 }
