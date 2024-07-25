@@ -42,11 +42,9 @@ namespace BikeApi.Controllers
 		/// <response code="422">Dados Inválidos</response> 
 		[HttpGet("ciclista/{idCiclista}")]
 		[ProducesResponseType(200, Type = typeof(ObterCiclistaDto))]
-		public IActionResult ObterCiclista([FromRoute(Name = "idCiclista")] int idCiclista)
+		public OkObjectResult ObterCiclista([FromRoute(Name = "idCiclista")] int idCiclista)
 		{
-			_aluguelServico.ObterCiclista(idCiclista);
-
-			return StatusCode(200);
+			return new OkObjectResult(_aluguelServico.ObterCiclista(idCiclista));
 		}
 
 		/// <summary>
