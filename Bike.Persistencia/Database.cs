@@ -33,7 +33,7 @@ namespace BikeApi.Persistencia
 
 		public static void ExcluirRegistroAluguel(int idCiclista) => tabelaRegistroAluguel.RemoveAll(r => r.IdCiclista == idCiclista);
 
-		public static bool EmailJaEstaEmUso(string email) => tabelaCiclista.Any(c => c.Email == email);
+		public static bool EmailJaEstaEmUso(string email) => tabelaCiclista.Exists(c => c.Email == email);
 
 		public static void ExcluirCiclista(int idCiclista)
 		{
@@ -41,13 +41,13 @@ namespace BikeApi.Persistencia
 			tabelaMeioDePagamento.RemoveAll(m => m.IdCiclista == idCiclista);
 		}
 
-		public static Ciclista ObterCiclistaPorId(int id) => tabelaCiclista.FirstOrDefault(c => c.Id == id)!;
+		public static Ciclista ObterCiclistaPorId(int id) => tabelaCiclista.Find(c => c.Id == id)!;
 
-		public static MeioDePagamento ObterMeioDePagamentoPorIdCiclista(int idCiclista) => tabelaMeioDePagamento.FirstOrDefault(c => c.IdCiclista == idCiclista)!;
+		public static MeioDePagamento ObterMeioDePagamentoPorIdCiclista(int idCiclista) => tabelaMeioDePagamento.Find(c => c.IdCiclista == idCiclista)!;
 
 		public static RegistroAluguel ObterAluguelAtivo(int idCiclista)
 		{
-			return tabelaRegistroAluguel.FirstOrDefault(r => r.IdCiclista == idCiclista)!;
+			return tabelaRegistroAluguel.Find(r => r.IdCiclista == idCiclista)!;
 		}
 	}
 }
