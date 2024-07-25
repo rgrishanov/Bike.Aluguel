@@ -1,6 +1,6 @@
-﻿namespace Bike.Dto.CadastroCiclista
+﻿namespace Bike.Dto.Ciclista
 {
-    public class MeioDePagamento
+    public class MeioDePagamentoDto
     {
         public required string NomeTitular { get; set; }
         public required string Numero { get; set; }

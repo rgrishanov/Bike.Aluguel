@@ -1,47 +1,79 @@
 ﻿using Bike.Dominio.Ciclista.Validacao;
 using Bike.Dominio.Validacao;
-using Bike.Dto.CadastroCiclista;
+using Bike.Dto.Ciclista;
 
 namespace BikeApi.Dominio.Ciclista
 {
 	public class Ciclista
 	{
-		public required string Nome { get; set; }
-		public DateTime Nascimento { get; set; }
-		public required string Cpf { get; set; }
-		public required Passaporte Passaporte { get; set; }
-		public required string Nacionalidade { get; set; }
-		public required string Email { get; set; }
-		public required string UrlFotoDocumento { get; set; }
-		public required string Senha { get; set; }
+		public int Id { get; private set; }
+		public string Nome { get; private set; }
+		public DateTime Nascimento { get; private set; }
+		public string Cpf { get; private set; }
+		public Passaporte? Passaporte { get; private set; }
+		public string Nacionalidade { get; private set; }
+		public string Email { get; private set; }
+		public string UrlFotoDocumento { get; private set; }
+		public string Senha { get; private set; }
+        public string Status { get; private set; }  // 'AGUARDANDO_CONFIRMACAO', 'ATIVO', 'INATIVO',
+        public DateTime AtivoDesde { get; set; }
 
-		public Ciclista(CiclistaDto dto)
+        public Ciclista(CiclistaDto dto)
 		{
 			Validador.Validar(dto, new CiclistaValidacao());
 
-			Nome = dto.Nome!;
-			Nascimento = dto.Nascimento!.Value;
-			Cpf = dto.Cpf!;
-			//Passaporte = new Passaporte
-			//{
-			//	Numero = dto.Passaporte!.Numero!,
-			//	Validade = dto.Passaporte.Validade,
-			//	Pais = dto.Passaporte.Pais!
-			//};
-			Nacionalidade = dto.Nacionalidade!;
-			Email = dto.Email!;
-			UrlFotoDocumento = dto.UrlFotoDocumento!;
-			Senha = dto.Senha!;
+			this.PreencherCamposBasicos(dto);
 
-			if (dto.Senha == null)
-				throw new System.Exception("Senha não pode ser nula");
+			Status = "AGUARDANDO_CONFIRMACAO";
+
+			if (this.Nacionalidade!.ToUpperInvariant().Equals("ESTRANGEIRO"))
+				Passaporte = new Passaporte(dto.Passaporte!);
 		}
-    }
 
-	public class Passaporte
-	{
-		public required string Numero { get; set; }
-		public DateTime Validade { get; set; }
-		public required string Pais { get; set; }
+		public void SetarIdInicial(int id)
+		{
+			if (this.Id == 0)
+				this.Id = id;
+			else
+				throw new ArgumentException("Não é possível alterar o Id do Ciclista.");
+		}
+
+		public void AtivarCadastro()
+		{
+			switch (this.Status)
+			{
+				case "AGUARDANDO_CONFIRMACAO":
+					this.Status = "ATIVO";
+					this.AtivoDesde = DateTime.Now;
+					break;
+				case "INATIVO":
+					throw new ArgumentException("Este ciclista está Inativo.");
+				case "ATIVO":
+					throw new ArgumentException("Este ciclista já está Ativo.");
+				default:
+					throw new ArgumentException("Status indefinido, erro impossível.");
+			}
+		}
+
+		public void Alterar(CiclistaDto dto)
+		{
+			Validador.Validar(dto, new CiclistaValidacao());
+
+			if (this.Nacionalidade.ToUpperInvariant().Equals("ESTRANGEIRO"))
+				Passaporte = new Passaporte(dto.Passaporte!);
+
+			this.PreencherCamposBasicos(dto);		
+		}
+
+		private void PreencherCamposBasicos(CiclistaDto dto)
+		{
+			this.Nome = dto.Nome!;
+			this.Nascimento = dto.Nascimento!.Value;
+			this.Cpf = dto.Cpf!;
+			this.Nacionalidade = dto.Nacionalidade!;
+			this.Email = dto.Email!;
+			this.UrlFotoDocumento = dto.UrlFotoDocumento!;
+			this.Senha = dto.Senha!;
+		}
 	}
 }

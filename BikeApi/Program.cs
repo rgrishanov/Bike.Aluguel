@@ -1,16 +1,23 @@
+using Bike.Api.ControleErros;
 using BikeApi.Aplicacao.AluguelServico;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddMvc(options =>
+{
+	options.Filters.Add(typeof(ExceptionFilter));
+});
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers(options =>
+{
+	options.Filters.Add(new ProducesAttribute("application/json"));
+	options.Filters.Add(new ConsumesAttribute("application/json"));
+});
+
 builder.Services.AddEndpointsApiExplorer();
-
-//builder.Services.AddSwaggerGen();
 
 // Configure Swagger
 builder.Services.AddSwaggerGen(c =>
@@ -25,6 +32,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddScoped<IAluguelServico, AluguelServico>();
+builder.Services.AddScoped<IIntegracaoExternoServico, IntegracaoExternoServico>();
+builder.Services.AddScoped<IIntegracaoEquipamentoServico, IntegracaoEquipamentoServico>();
 
 var app = builder.Build();
 

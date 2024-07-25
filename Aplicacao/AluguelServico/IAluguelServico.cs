@@ -1,9 +1,19 @@
-﻿using Bike.Dto.CadastroCiclista;
+﻿using Bike.Dto.Ciclista;
 
 namespace BikeApi.Aplicacao.AluguelServico
 {
-	public interface IAluguelServico
+    public interface IAluguelServico
 	{
-		public void CadastrarCiclista(CadastroCiclistaDto dto);
+		public ObterCiclistaDto CadastrarCiclista(CadastroInicialDto dto);
+
+		public ObterCiclistaDto AtivarCiclista(int idCiclista);
+
+		public ObterCiclistaDto ObterCiclista(int idCiclista);
+
+		public ObterCiclistaDto AlterarCiclista(int idCiclista, CiclistaDto dto);
+		
+		public void AlterarMeioDePagamento(int idCiclista, MeioDePagamentoDto dto);
+
+		public void Alugar(int ciclista, int trancaInicio);
 	}
 }

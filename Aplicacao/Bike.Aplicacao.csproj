@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Bike.Dominio\Bike.Dominio.csproj" />
     <ProjectReference Include="..\Bike.Dto\Bike.Dto.csproj" />
+    <ProjectReference Include="..\Bike.Persistencia\Bike.Persistencia.csproj" />
   </ItemGroup>
 
 </Project>

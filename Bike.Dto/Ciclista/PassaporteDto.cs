@@ -1,4 +1,4 @@
-﻿namespace Bike.Dto.CadastroCiclista
+﻿namespace Bike.Dto.Ciclista
 {
     public class PassaporteDto
     {

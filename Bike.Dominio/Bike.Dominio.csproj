@@ -9,13 +9,7 @@
   <ItemGroup>
     <None Remove="Ciclista\desktop.ini" />
     <None Remove="desktop.ini" />
-    <None Remove="Funcionario\desktop.ini" />
-    <None Remove="Funcionario\Validacao\desktop.ini" />
     <None Remove="MeioDePagamento\desktop.ini" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Funcionario\Validacao\" />
   </ItemGroup>
 
   <ItemGroup>

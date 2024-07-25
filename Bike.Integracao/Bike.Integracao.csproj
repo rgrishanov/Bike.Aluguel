@@ -6,12 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="desktop.ini" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Bike.Dominio\Bike.Dominio.csproj" />
-  </ItemGroup>
-
 </Project>
