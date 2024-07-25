@@ -12,6 +12,7 @@ namespace BikeApi.Controllers
 	/// </remarks>
 	/// <param name="aluguelServico"></param>
 	[ApiController]
+	[Route("")]
 	public class AluguelController(IAluguelServico aluguelServico) : ControllerBase
 	{
 		private readonly IAluguelServico _aluguelServico = aluguelServico;
