@@ -15,10 +15,10 @@ namespace BikeApi.Dominio.Ciclista
 		public string Email { get; private set; }
 		public string UrlFotoDocumento { get; private set; }
 		public string Senha { get; private set; }
-        public string Status { get; private set; }  // 'AGUARDANDO_CONFIRMACAO', 'ATIVO', 'INATIVO',
-        public DateTime AtivoDesde { get; set; }
+		public string Status { get; private set; }  // 'AGUARDANDO_CONFIRMACAO', 'ATIVO', 'INATIVO',
+		public DateTime AtivoDesde { get; set; }
 
-        public Ciclista(CiclistaDto dto)
+		public Ciclista(CiclistaDto dto)
 		{
 			Validador.Validar(dto, new CiclistaValidacao());
 
@@ -62,7 +62,7 @@ namespace BikeApi.Dominio.Ciclista
 			if (this.Nacionalidade.ToUpperInvariant().Equals("ESTRANGEIRO"))
 				Passaporte = new Passaporte(dto.Passaporte!);
 
-			this.PreencherCamposBasicos(dto);		
+			this.PreencherCamposBasicos(dto);
 		}
 
 		private void PreencherCamposBasicos(CiclistaDto dto)
@@ -74,6 +74,32 @@ namespace BikeApi.Dominio.Ciclista
 			this.Email = dto.Email!;
 			this.UrlFotoDocumento = dto.UrlFotoDocumento!;
 			this.Senha = dto.Senha!;
+		}
+
+		public ObterCiclistaDto MapearParaDto()
+		{
+			ObterCiclistaDto dto = new()
+			{
+				Id = this.Id,
+				Status = this.Status,
+				Nome = this.Nome,
+				Nascimento = this.Nascimento,
+				Cpf = this.Cpf,
+				Nacionalidade = this.Nacionalidade,
+				Email = this.Email,
+				UrlFotoDocumento = this.UrlFotoDocumento
+			};
+
+			if (this.Passaporte != null)
+			{
+				dto.Passaporte = new()
+				{
+					Numero = this.Passaporte.Numero,
+					Validade = this.Passaporte.Validade,
+					Pais = this.Passaporte.Pais
+				};
+			}
+			return dto;
 		}
 	}
 }

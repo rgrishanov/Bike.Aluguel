@@ -1,7 +1,10 @@
 ﻿using Bike.Dominio;
 using Bike.Dominio.Aluguel;
 using Bike.Dto.Ciclista;
+using Bike.Dto.Equipamento;
+using Bike.Dto.Funcionario;
 using BikeApi.Dominio.Ciclista;
+using BikeApi.Dominio.Funcionario;
 using BikeApi.Dominio.MeioDePagamento;
 using BikeApi.Persistencia;
 
@@ -14,14 +17,14 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 		#region Ciclista
 
-		public ObterCiclistaDto CadastrarCiclista(CadastroInicialDto dto)
+		public ObterCiclistaDto CadastrarCiclista(CadastroCiclistaInicialDto dto)
 		{
 			if (dto.Ciclista == null)
 				throw new ArgumentException("É obrigatório informar os dados do Ciclista.");
 			if (dto.MeioDePagamento == null)
 				throw new ArgumentException("É obrigatório informar os dados de Meio do Pagamento.");
 
-			if (Database.EmailJaEstaEmUso(dto.Ciclista.Email!))
+			if (this.EmailJaEstaEmUso(dto.Ciclista.Email!))
 				throw new ArgumentException("O e-mail informado já está em uso.");
 
 			var ciclista = new Ciclista(dto.Ciclista);
@@ -39,7 +42,7 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 				throw new ArgumentException("Não foi possível enviar o e-mail de confirmação do cadastro.");
 
-			return MapearCiclistaParaDto(ciclista);
+			return ciclista.MapearParaDto();
 		}
 
 		public ObterCiclistaDto AtivarCiclista(int idCiclista)
@@ -49,12 +52,12 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 			// aqui teria algo sobre salvar no banco, mas sem banco já está tudo salvo na memória.
 
-			return MapearCiclistaParaDto(ciclista);
+			return ciclista.MapearParaDto();
 		}
 
 		public ObterCiclistaDto ObterCiclista(int idCiclista)
 		{
-			return MapearCiclistaParaDto(ObterCiclistaDominio(idCiclista));
+			return ObterCiclistaDominio(idCiclista).MapearParaDto();
 		}
 
 		public ObterCiclistaDto AlterarCiclista(int idCiclista, CiclistaDto dto)
@@ -70,10 +73,18 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 				throw new ArgumentException("Não foi possível enviar o e-mail de confirmação das Alterações do cadastro.");
 
-			return MapearCiclistaParaDto(ObterCiclistaDominio(idCiclista));
+			return ciclista.MapearParaDto();
 		}
 
-		public void AlterarMeioDePagamento(int idCiclista, MeioDePagamentoDto dto)
+		public MeioDePagamentoDto ObterMeioDePagamentoCiclista(int idCiclista)
+		{
+			// só pra ver se existe, se nao isso já dá exception
+			ObterCiclistaDominio(idCiclista);
+
+			return Database.ObterMeioDePagamentoPorIdCiclista(idCiclista).MapearParaDto();
+		}
+
+		public void AlterarMeioDePagamentoCiclista(int idCiclista, MeioDePagamentoDto dto)
 		{
 			var ciclista = ObterCiclistaDominio(idCiclista);
 			var meioPagamento = this.CriarMeioDePagamentoValidado(dto);
@@ -88,6 +99,71 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 				throw new ArgumentException("Não foi possível enviar o e-mail de confirmação da alteração do Meio de Pagamento.");
 		}
+
+		public bool CiclistaPodeAlugar(int idCiclista)
+		{
+			// só pra ver se existe, se nao isso já dá exception
+			ObterCiclistaDominio(idCiclista);
+
+			return Database.ObterAluguelAtivo(idCiclista) == null;
+		}
+
+		public BicicletaDto ObterBicicletaAlugada(int idCiclista)
+		{
+			// só pra ver se existe, se nao isso já dá exception
+			ObterCiclistaDominio(idCiclista);
+
+			var aluguelAtivo = Database.ObterAluguelAtivo(idCiclista);
+
+			if (aluguelAtivo == null)
+				return null!;
+
+			return _equipamento.ObterBicicletaPorId(aluguelAtivo.IdBicicleta);
+		}
+
+		public bool EmailJaEstaEmUso(string email)
+		{
+			if (string.IsNullOrEmpty(email))
+				throw new FormatException("email");
+
+			return Database.EmailJaEstaEmUso(email);
+		}
+
+		#endregion
+
+		#region Funcionario
+
+		public FuncionarioDto CadastrarFuncionario(FuncionarioBaseDto dto)
+		{
+			if (dto == null)
+				throw new ArgumentException("É obrigatório informar os dados do Funcionário.");
+
+			var funcionario = new Funcionario(dto);
+
+			Database.ArmazenarFuncionario(funcionario);
+
+			return funcionario.MapearParaDto();
+		}
+
+		public FuncionarioDto ObterFuncionario(int idFuncionario) => ObterFuncionarioDominio(idFuncionario).MapearParaDto();
+
+		public void ExcluirFuncionario(int idFuncionario)
+		{
+			Database.ExcluirFuncionario(idFuncionario);
+		}
+
+		public FuncionarioDto AlterarFuncionario(int idFuncionario, FuncionarioBaseDto dto)
+		{
+			var funcionario = ObterFuncionarioDominio(idFuncionario);
+
+			funcionario.Alterar(dto);
+
+			// aqui teria algo sobre salvar no banco, mas sem banco já está tudo salvo na memória.
+
+			return funcionario.MapearParaDto();
+		}
+
+		public IEnumerable<FuncionarioDto> ObterFuncionarios() => Database.ObterFuncionarios().Select(f => f.MapearParaDto()).ToList();
 
 		#endregion
 
@@ -148,32 +224,10 @@ namespace BikeApi.Aplicacao.AluguelServico
 		private static Ciclista ObterCiclistaDominio(int idCiclista) =>
 			Database.ObterCiclistaPorId(idCiclista) ?? throw new EntidadeInexistenteException($"Ciclista com id {idCiclista} não existe.");
 
-		private static ObterCiclistaDto MapearCiclistaParaDto(Ciclista ciclista)
-		{
-			ObterCiclistaDto dto = new()
-			{
-				Id = ciclista.Id,
-				Status = ciclista.Status,
-				Nome = ciclista.Nome,
-				Nascimento = ciclista.Nascimento,
-				Cpf = ciclista.Cpf,
-				Nacionalidade = ciclista.Nacionalidade,
-				Email = ciclista.Email,
-				UrlFotoDocumento = ciclista.UrlFotoDocumento
-			};
+		private static Funcionario ObterFuncionarioDominio(int idFuncionario) =>
+			Database.ObterFuncionarioPorId(idFuncionario) ?? throw new EntidadeInexistenteException($"Funcionario com id {idFuncionario} não existe.");
 
-			if (ciclista.Passaporte != null)
-			{
-				dto.Passaporte = new()
-				{
-					Numero = ciclista.Passaporte.Numero,
-					Validade = ciclista.Passaporte.Validade,
-					Pais = ciclista.Passaporte.Pais
-				};
-			}
 
-			return dto;
-		}
 		private MeioDePagamento CriarMeioDePagamentoValidado(MeioDePagamentoDto dto)
 		{
 			var meioPagamentoDominio = new MeioDePagamento(dto);

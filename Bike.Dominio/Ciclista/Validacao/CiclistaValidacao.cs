@@ -59,7 +59,7 @@ namespace Bike.Dominio.Ciclista.Validacao
 				.NotEmpty()
 				.WithMessage("Senha não pode ser vazia")
 
-				.Equal(x => x.SenhaConfirmacao)
+				.Equal(x => x.ConfirmacaoSenha)
 				.WithMessage("Senha e Confirmação de senha são diferentes");
 		}
 	}

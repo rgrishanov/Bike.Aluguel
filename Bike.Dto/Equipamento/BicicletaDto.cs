@@ -1,6 +1,6 @@
 ﻿namespace Bike.Dto.Equipamento
 {
-	public class BicicletaNaTrancaDto
+	public class BicicletaDto
 	{ 
 		public required int Id { get; set; }
 		public required string Marca { get; set; }

@@ -17,7 +17,7 @@ namespace Bike.Testes.Unidade.Dominio
 				Nacionalidade = "BRASILEIRO",
 				Nascimento = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc),
 				Senha = "123456",
-				SenhaConfirmacao = "123456",
+				ConfirmacaoSenha = "123456",
 				UrlFotoDocumento = "http://url.com/foto"
 			};
 
@@ -87,7 +87,7 @@ namespace Bike.Testes.Unidade.Dominio
 				Nacionalidade = "BRASILEIRO",
 				Nascimento = new DateTime(1992, 6, 6, 0, 0, 0, DateTimeKind.Utc),
 				Senha = "123456!@#",
-				SenhaConfirmacao = "123456!@#",
+				ConfirmacaoSenha = "123456!@#",
 				UrlFotoDocumento = "http://url.com/foto/Alterada.jpg"
 			};
 
@@ -147,11 +147,11 @@ namespace Bike.Testes.Unidade.Dominio
 		[Theory(DisplayName = "Obtém Exceptions ao Criar Ciclista com valores Errados, Nulos ou Vazios")]
 		[MemberData(nameof(DadosPraTestesException))]
 		public void ObterExceptionAoCriarCiclistaComValoresNulosOuVazios(string cpf, string nome, string email, string nacionalidade,
-			 DateTime nascimento, string senha, string senhaConfirmacao, string urlFotoDocumento, PassaporteDto passaporte, string erro)
+			 DateTime nascimento, string senha, string confirmacaoSenha, string urlFotoDocumento, PassaporteDto passaporte, string erro)
 		{
 			var dto = new CiclistaDto() { 
 				Cpf = cpf, Nome = nome, Email = email, Nacionalidade = nacionalidade, Nascimento = nascimento, Senha = senha,
-				SenhaConfirmacao = senhaConfirmacao, UrlFotoDocumento = urlFotoDocumento, Passaporte = passaporte
+				ConfirmacaoSenha = confirmacaoSenha, UrlFotoDocumento = urlFotoDocumento, Passaporte = passaporte
 			};
 
 			var exception = Assert.Throws<ArgumentException>(() => new Ciclista(dto));

@@ -28,7 +28,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 		[Fact(DisplayName = "Operações Básicas do Ciclista")]
 		public void TesteCriacao()
 		{
-			CadastroInicialDto dto = new CadastroInicialDto();
+			CadastroCiclistaInicialDto dto = new CadastroCiclistaInicialDto();
 			Assert.Equal("É obrigatório informar os dados do Ciclista.", Assert.Throws<ArgumentException>(() => _servico.CadastrarCiclista(dto)).Message);
 
 			dto.Ciclista = new CiclistaDto()
@@ -39,7 +39,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 				Nacionalidade = "BRASILEIRO",
 				Nascimento = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc),
 				Senha = "123456",
-				SenhaConfirmacao = "123456",
+				ConfirmacaoSenha = "123456",
 				UrlFotoDocumento = "http://url.com/foto"
 			};
 			Assert.Equal("É obrigatório informar os dados de Meio do Pagamento.", Assert.Throws<ArgumentException>(() => _servico.CadastrarCiclista(dto)).Message);
@@ -132,7 +132,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 				Nacionalidade = "BRASILEIRO",
 				Nascimento = new DateTime(1992, 6, 6, 0, 0, 0, DateTimeKind.Utc),
 				Senha = "123456!@#",
-				SenhaConfirmacao = "123456!@#",
+				ConfirmacaoSenha = "123456!@#",
 				UrlFotoDocumento = "http://url.com/foto/Alterada.jpg"
 			};
 
@@ -169,9 +169,9 @@ namespace Bike.Testes.Unidade.Aplicacao
 			this._integracaoExterna.Setup(x => x.MeioPagamnentoValido(It.IsAny<MeioDePagamento>())).Returns(true);
 
 			this._integracaoExterna.SetupSequence(x => x.EnviarEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false).Returns(true);
-			Assert.Equal("Não foi possível enviar o e-mail de confirmação da alteração do Meio de Pagamento.", Assert.Throws<ArgumentException>(() => _servico.AlterarMeioDePagamento(ciclista.Id, dtoMeioPagamentoNovo)).Message);
+			Assert.Equal("Não foi possível enviar o e-mail de confirmação da alteração do Meio de Pagamento.", Assert.Throws<ArgumentException>(() => _servico.AlterarMeioDePagamentoCiclista(ciclista.Id, dtoMeioPagamentoNovo)).Message);
 
-			_servico.AlterarMeioDePagamento(ciclista.Id, dtoMeioPagamentoNovo);
+			_servico.AlterarMeioDePagamentoCiclista(ciclista.Id, dtoMeioPagamentoNovo);
 
 			this._integracaoExterna.Verify(x => x.EnviarEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(5));
 		}
@@ -179,7 +179,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 		[Fact(DisplayName = "Teste de Alugar")]
 		public void TesteAlugar()
 		{
-			CadastroInicialDto dto = new CadastroInicialDto();
+			CadastroCiclistaInicialDto dto = new CadastroCiclistaInicialDto();
 			dto.Ciclista = new CiclistaDto()
 			{
 				Cpf = "79412268041",
@@ -188,7 +188,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 				Nacionalidade = "BRASILEIRO",
 				Nascimento = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc),
 				Senha = "123456",
-				SenhaConfirmacao = "123456",
+				ConfirmacaoSenha = "123456",
 				UrlFotoDocumento = "http://url.com/foto"
 			};
 			dto.MeioDePagamento = new MeioDePagamentoDto()
@@ -211,7 +211,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 
 			// ciclista criado e ativado, vamos alugar pra ele
 
-			BicicletaNaTrancaDto bicicletaNaTrancaDto = new BicicletaNaTrancaDto()
+			BicicletaDto bicicletaNaTrancaDto = new BicicletaDto()
 			{
 				Ano = "2020",
 				Id = 1,

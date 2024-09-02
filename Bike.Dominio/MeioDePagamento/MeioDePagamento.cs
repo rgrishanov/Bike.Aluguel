@@ -38,5 +38,17 @@ namespace BikeApi.Dominio.MeioDePagamento
 			else
 				throw new ArgumentException("Não é possível alterar o IdCiclista do Meio de Pagamento.");
 		}
+
+		public ObterMeioDePagamentoDto MapearParaDto()
+		{
+			return new ObterMeioDePagamentoDto()
+			{
+				Id = this.Id,
+				NomeTitular = this.NomeTitular,
+				Numero = this.Numero,
+				Validade = this.Validade,
+				Cvv = this.Cvv
+			};
+		}
 	}
 }

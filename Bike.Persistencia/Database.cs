@@ -1,5 +1,6 @@
 ﻿using Bike.Dominio.Aluguel;
 using BikeApi.Dominio.Ciclista;
+using BikeApi.Dominio.Funcionario;
 using BikeApi.Dominio.MeioDePagamento;
 
 namespace BikeApi.Persistencia
@@ -9,12 +10,20 @@ namespace BikeApi.Persistencia
 		private static List<Ciclista> tabelaCiclista = new();
 		private static List<MeioDePagamento> tabelaMeioDePagamento = new();
 		private static List<RegistroAluguel> tabelaRegistroAluguel = new();
+		private static List<Funcionario> tabelaFuncionario = new();
 
 		public static void ArmazenarCiclista(Ciclista ciclista)
 		{
 			// pegamos o maior ID que tem na tabela, somamos 1 e atribuímos ao Id do novo Ciclista
 			ciclista.SetarIdInicial(tabelaCiclista.Any() ? tabelaCiclista.Max(c => c.Id) + 1 : 1);
 			tabelaCiclista.Add(ciclista);
+		}
+
+		public static void ArmazenarFuncionario(Funcionario funcionario)
+		{
+			// pegamos o maior ID que tem na tabela, somamos 1 e atribuímos ao Id do novo Funcionario
+			funcionario.SetarIdInicial(tabelaFuncionario.Any() ? tabelaFuncionario.Max(c => c.Id) + 1 : 1);
+			tabelaFuncionario.Add(funcionario);
 		}
 
 		public static void ArmazenarMeioDePagamento(MeioDePagamento meio)
@@ -42,6 +51,15 @@ namespace BikeApi.Persistencia
 		}
 
 		public static Ciclista ObterCiclistaPorId(int id) => tabelaCiclista.Find(c => c.Id == id)!;
+
+		public static Funcionario ObterFuncionarioPorId(int id) => tabelaFuncionario.Find(c => c.Id == id)!;
+
+		public static void ExcluirFuncionario(int idFuncionario)
+		{
+			tabelaFuncionario.RemoveAll(c => c.Id == idFuncionario);
+		}
+
+		public static IEnumerable<Funcionario> ObterFuncionarios() => tabelaFuncionario;
 
 		public static MeioDePagamento ObterMeioDePagamentoPorIdCiclista(int idCiclista) => tabelaMeioDePagamento.Find(c => c.IdCiclista == idCiclista)!;
 

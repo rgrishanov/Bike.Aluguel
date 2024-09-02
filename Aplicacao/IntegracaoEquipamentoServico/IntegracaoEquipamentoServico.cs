@@ -4,11 +4,11 @@ namespace BikeApi.Aplicacao.AluguelServico
 {
 	public class IntegracaoEquipamentoServico : IIntegracaoEquipamentoServico
 	{
-		public BicicletaNaTrancaDto ObterBicicletaNaTranca(int idTranca)
+		public BicicletaDto ObterBicicletaNaTranca(int idTranca)
 		{
 			// temp até integrar
 
-			return new BicicletaNaTrancaDto
+			return new BicicletaDto
 			{
 				Id = 30,
 				Ano = "2021",
@@ -17,6 +17,21 @@ namespace BikeApi.Aplicacao.AluguelServico
 				Numero = 123,
 				Status = "status"
 			};		
+		}
+
+		public BicicletaDto ObterBicicletaPorId(int idBicicleta)
+		{
+			// temp até integrar
+
+			return new BicicletaDto
+			{
+				Id = 30,
+				Ano = "2021",
+				Marca = "Caloi",
+				Modelo = "Mountain 9000",
+				Numero = 123,
+				Status = "status"
+			};
 		}
 
 		public void AlterarStatusBicicleta(int idBicicleta, string novoStatus)
