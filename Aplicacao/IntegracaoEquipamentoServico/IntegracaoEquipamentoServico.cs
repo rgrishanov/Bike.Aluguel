@@ -16,13 +16,12 @@ namespace BikeApi.Aplicacao.AluguelServico
 				Modelo = "Mountain 9000",
 				Numero = 123,
 				Status = "status"
-			};		
+			};
 		}
 
 		public BicicletaDto ObterBicicletaPorId(int idBicicleta)
 		{
 			// temp até integrar
-
 			return new BicicletaDto
 			{
 				Id = 30,

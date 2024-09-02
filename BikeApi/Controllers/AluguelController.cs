@@ -90,7 +90,12 @@ namespace BikeApi.Controllers
 		[ProducesResponseType(200, Type = typeof(BicicletaDto))]
 		public OkObjectResult ObterBicicletaAlugada([FromRoute(Name = "idCiclista")] int idCiclista)
 		{
-			return new OkObjectResult(_aluguelServico.ObterBicicletaAlugada(idCiclista));
+			var retorno = _aluguelServico.ObterBicicletaAlugada(idCiclista);
+
+			if (retorno == null)
+				return new OkObjectResult("");
+
+			return new OkObjectResult(retorno);
 		}
 
 		/// <summary>
