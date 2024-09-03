@@ -10,10 +10,17 @@ namespace Bike.Dominio.Aluguel
 		public required string MeioPagamento { get; set; }
 		public DateTime DataHoraRetirada { get; private set; }
 
-        public RegistroAluguel()
+		public RegistroDevolucao? RegistroDevolucao { get; set; }
+
+		public RegistroAluguel()
         {
 			this.DataHoraRetirada = DateTime.Now;
         }
+
+		public void ForcarDataRetirada(DateTime data)
+		{
+			this.DataHoraRetirada = data;
+		}
 
 		public string FormatarParaEmail()
 		{

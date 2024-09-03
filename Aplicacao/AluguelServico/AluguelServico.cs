@@ -194,7 +194,7 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 			// não tem erro. mesmo com erro a cobrança é armazenada para mais tarde.
 			// R2 – Deverá ser feita uma cobrança de R$ 10,00 pelas duas primeiras horas de uso.
-			_integracaoExterna.EfetuarCobranca(idCiclista, 10.00f);
+			this._integracaoExterna.EfetuarCobranca(idCiclista, 10.00f);
 
 			var registroDesteAluguel = new RegistroAluguel()
 			{
@@ -217,6 +217,46 @@ namespace BikeApi.Aplicacao.AluguelServico
 			this._integracaoExterna.EnviarEmail(ciclista.Email, "Aluguel efetuado com Sucesso - Bikeria SCB", registroDesteAluguel.FormatarParaEmail());
 		}
 
+		public void Devolver(int idTranca, int idBicicleta)
+		{
+			var tranca = this._equipamento.ObterTrancaPorId(idTranca);
+			if (tranca.Status != "LIVRE")
+				throw new ArgumentException("Esta tranca não está disponível para devolver a bicicleta, escolha outra tranca.");
+
+			var bike = this._equipamento.ObterBicicletaPorId(idBicicleta);
+
+			if (bike == null)
+				throw new ArgumentException("Bicicleta om identificador Inválido. Favor entrar em contato com Suporte.");
+
+			if (bike.Status != "EM_USO")
+				throw new ArgumentException("Esta bicicleta não está em uso. Favor entrar em contato com Suporte.");
+
+			var registroAluguel = Database.ObterRegistroAluguel(idTranca, idBicicleta);
+			if (registroAluguel == null)
+				throw new ArgumentException("Não foi possivel localizar o registro do aluguel");
+
+			var ciclista = Database.ObterCiclistaPorId(registroAluguel.IdCiclista);
+
+			var valoraAPagar = this.CalcularValorDevido(registroAluguel.DataHoraRetirada);
+
+			this._integracaoExterna.EfetuarCobranca(ciclista.Id, valoraAPagar);
+
+			var cartao = Database.ObterMeioDePagamentoPorIdCiclista(ciclista.Id);
+			var regDevolucao = new RegistroDevolucao(DateTime.Now, DateTime.Now, valoraAPagar, cartao.Numero, idBicicleta, idTranca, registroAluguel);
+
+			registroAluguel.RegistroDevolucao = regDevolucao;
+			// aqui teria atualizar Registro Aluguel no Banco se tivesse banco
+
+			Database.ArmazenarRegistroDevolucao(regDevolucao);
+
+			_equipamento.AlterarStatusBicicleta(bike.Id, "DISPONIVEL");
+
+			this._equipamento.TrancarTranca(idTranca);
+
+			this._integracaoExterna.EnviarEmail(ciclista.Email, "Devolução Efetuada com Sucesso - Bikeria SCB", regDevolucao.FormatarParaEmail());
+		}
+
+
 		// status bike ['DISPONIVEL','EM_USO', 'NOVA', 'APOSENTADA', 'REPARO_SOLICITADO', 'EM_REPARO' ]
 
 		#region Métodos privados
@@ -236,6 +276,16 @@ namespace BikeApi.Aplicacao.AluguelServico
 				throw new ArgumentException("Meio de pagamento informado não pôde ser validado junto a operadora. Favor fornecer um outro meio de pagamento.");
 
 			return meioPagamentoDominio;
+		}
+
+		private float CalcularValorDevido(DateTime horaRetirada)
+		{
+			var tempoTotal = DateTime.Now - horaRetirada;
+
+			if (tempoTotal <= TimeSpan.FromHours(2))
+				return 0f;
+			else
+				return 5 * (int)Math.Ceiling((tempoTotal - TimeSpan.FromHours(2)).TotalMinutes / 30);
 		}
 
 		#endregion

@@ -10,7 +10,17 @@ namespace BikeApi.Persistencia
 		private static List<Ciclista> tabelaCiclista = new();
 		private static List<MeioDePagamento> tabelaMeioDePagamento = new();
 		private static List<RegistroAluguel> tabelaRegistroAluguel = new();
+		private static List<RegistroDevolucao> tabelaRegistroDevolucao = new();
 		private static List<Funcionario> tabelaFuncionario = new();
+
+		public static void Purge()
+		{
+			tabelaCiclista.Clear();
+			tabelaFuncionario.Clear();
+			tabelaMeioDePagamento.Clear();
+			tabelaRegistroAluguel.Clear();
+			tabelaRegistroDevolucao.Clear();
+		}
 
 		public static void ArmazenarCiclista(Ciclista ciclista)
 		{
@@ -31,6 +41,11 @@ namespace BikeApi.Persistencia
 			// pegamos o maior ID que tem na tabela, somamos 1 e atribuímos ao Id do novo Meio de Pagamento
 			meio.SetarIdInicial(tabelaMeioDePagamento.Any() ? tabelaMeioDePagamento.Max(c => c.Id) + 1 : 1);
 			tabelaMeioDePagamento.Add(meio);
+		}
+
+		public static void ArmazenarRegistroDevolucao(RegistroDevolucao registro)
+		{
+			tabelaRegistroDevolucao.Add(registro);
 		}
 
 		public static void ArmazenarRegistroAluguel(RegistroAluguel registro)
@@ -65,7 +80,12 @@ namespace BikeApi.Persistencia
 
 		public static RegistroAluguel ObterAluguelAtivo(int idCiclista)
 		{
-			return tabelaRegistroAluguel.Find(r => r.IdCiclista == idCiclista)!;
+			return tabelaRegistroAluguel.Find(r => r.IdCiclista == idCiclista && r.RegistroDevolucao == null)!;
+		}
+
+		public static RegistroAluguel ObterRegistroAluguel(int idTranca, int idBicicleta)
+		{
+			return tabelaRegistroAluguel.Where(r => r.IdTranca == idTranca && r.IdBicicleta == idBicicleta).FirstOrDefault()!;
 		}
 	}
 }

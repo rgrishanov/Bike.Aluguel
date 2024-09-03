@@ -49,5 +49,26 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 			return true;
 		}
+
+		public bool TrancarTranca(int idTranca)
+		{
+			// temp até integrar
+
+			return true;
+		}
+
+		public TrancaDto ObterTrancaPorId(int idBicicleta)
+		{
+			return new TrancaDto()
+			{
+				AnoDeFabricacao = "2022",
+				Id = 30,
+				Localizacao = "bla",
+				Modelo = "UltraLock 9000",
+				Status = "LIVRE",
+				Bicicleta = idBicicleta,
+				Numero = 123
+			};
+		}
 	}
 }

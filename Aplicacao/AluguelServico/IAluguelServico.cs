@@ -26,6 +26,8 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 		public void Alugar(int idCiclista, int idTranca);
 
+		public void Devolver(int idTranca, int idBicicleta);
+
 		public FuncionarioDto CadastrarFuncionario(FuncionarioBaseDto dto);
 
 

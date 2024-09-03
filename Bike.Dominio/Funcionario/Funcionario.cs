@@ -10,23 +10,29 @@ namespace BikeApi.Dominio.Funcionario
 		public string Nome { get; private set; }
 		public string Email { get; private set; }
 		public string Cpf { get; private set; }
-		public string Matricula { get; set; }
+		public string Matricula { get; private set; }
 		public int Idade { get; private set; }
 		public string Funcao { get; private set; }
 		public string Senha { get; private set; }
 
-		public Funcionario(FuncionarioBaseDto dto)
+		public Funcionario(FuncionarioBaseDto dto, bool validar = true)
 		{
-			Validador.Validar(dto, new FuncionarioValidacao());
+			if (validar)
+				Validador.Validar(dto, new FuncionarioValidacao());
 
 			this.PreencherCamposBasicos(dto);
 
-			this.Matricula = this.GerarMatricula();
+			this.GerarMatricula();
 		}
 
-		private string GerarMatricula()
+		public void GerarMatricula()
 		{
-			return DateTime.Today.Year.ToString() + new Random().Next(1000000, 9999999);
+			this.Matricula = DateTime.Today.Year.ToString() + new Random().Next(1000000, 9999999);
+		}
+
+		public void ForcarMatricula(string matricula)
+		{
+			this.Matricula = matricula;
 		}
 
 		public void SetarIdInicial(int id)

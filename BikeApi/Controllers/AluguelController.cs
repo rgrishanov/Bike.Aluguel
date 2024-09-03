@@ -1,7 +1,12 @@
+using Bike.Dominio.Aluguel;
 using Bike.Dto.Ciclista;
 using Bike.Dto.Equipamento;
 using Bike.Dto.Funcionario;
 using BikeApi.Aplicacao.AluguelServico;
+using BikeApi.Dominio.Ciclista;
+using BikeApi.Dominio.Funcionario;
+using BikeApi.Dominio.MeioDePagamento;
+using BikeApi.Persistencia;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BikeApi.Controllers
@@ -17,6 +22,217 @@ namespace BikeApi.Controllers
 	public partial class AluguelController(IAluguelServico aluguelServico) : ControllerBase
 	{
 		private readonly IAluguelServico _aluguelServico = aluguelServico;
+
+		/// <summary>
+		/// Restaura os Dados básicas para execução de testes
+		/// </summary>
+		/// <returns>Http status 200(OK)</returns>
+		/// <response code="200">Dados restauradas com Sucesso</response> 
+		[HttpGet("restaurarDados")]
+		[ProducesResponseType(200)]
+		public IActionResult RestaurarDados()
+		{
+			// primeiro limpa o banco
+			Database.Purge();
+
+			// começa ciclista 1
+
+			var ciclista1dto = new CiclistaDto()
+			{
+				Cpf = "78804034009",
+				Nome = "Fulano Beltrano",
+				Email = "user@example.com",
+				Nacionalidade = "BRASILEIRO",
+				Nascimento = new DateTime(2021, 5, 2, 0, 0, 0, DateTimeKind.Utc),
+				Senha = "ABC123",
+				ConfirmacaoSenha = "ABC123",
+				UrlFotoDocumento = "http://url.com/foto"
+			};
+			var meio1dto = new MeioDePagamentoDto()
+			{
+				NomeTitular = "Fulano Beltrano",
+				Numero = "4012001037141112",
+				Cvv = "132",
+				Validade = new DateTime(2024, 12, 1)
+			};
+
+			var ciclista1 = new Ciclista(ciclista1dto);
+			ciclista1.AtivarCadastro();
+			Database.ArmazenarCiclista(ciclista1);
+
+			var meio1 = new MeioDePagamento(meio1dto);
+			Database.ArmazenarMeioDePagamento(meio1);
+			meio1.SetarIdCiclista(ciclista1.Id);
+
+			// termina ciclista 1
+
+			// começa ciclista 2
+
+			var ciclista2dto = new CiclistaDto()
+			{
+				Cpf = "43943488039",
+				Nome = "Fulano Beltrano",
+				Email = "user2@example.com",
+				Nacionalidade = "BRASILEIRO",
+				Nascimento = new DateTime(2021, 5, 2, 0, 0, 0, DateTimeKind.Utc),
+				Senha = "ABC123",
+				ConfirmacaoSenha = "ABC123",
+				UrlFotoDocumento = "http://url.com/foto"
+			};
+
+			var meio2dto = new MeioDePagamentoDto()
+			{
+				NomeTitular = "Fulano Beltrano",
+				Numero = "4012001037141112",
+				Cvv = "132",
+				Validade = new DateTime(2024, 12, 1)
+			};
+
+			var ciclista2 = new Ciclista(ciclista2dto);
+			Database.ArmazenarCiclista(ciclista2);
+
+			var meio2 = new MeioDePagamento(meio2dto);
+			Database.ArmazenarMeioDePagamento(meio2);
+			meio2.SetarIdCiclista(ciclista2.Id);
+
+			// termina ciclista 2
+
+			// começa ciclista 3
+
+			var ciclista3dto = new CiclistaDto()
+			{
+				Cpf = "10243164084",
+				Nome = "Fulano Beltrano",
+				Email = "user3@example.com",
+				Nacionalidade = "BRASILEIRO",
+				Nascimento = new DateTime(2021, 5, 2, 0, 0, 0, DateTimeKind.Utc),
+				Senha = "ABC123",
+				ConfirmacaoSenha = "ABC123",
+				UrlFotoDocumento = "http://url.com/foto"
+			};
+
+			var meio3dto = new MeioDePagamentoDto()
+			{
+				NomeTitular = "Fulano Beltrano",
+				Numero = "4012001037141112",
+				Cvv = "132",
+				Validade = new DateTime(2024, 12, 1)
+			};
+
+			var ciclista3 = new Ciclista(ciclista3dto);
+			ciclista3.AtivarCadastro();
+			Database.ArmazenarCiclista(ciclista3);
+
+			var meio3 = new MeioDePagamento(meio3dto);
+			Database.ArmazenarMeioDePagamento(meio3);
+			meio3.SetarIdCiclista(ciclista3.Id);
+
+			// termina ciclista 3
+
+			// começa ciclista 4
+
+			var ciclista4dto = new CiclistaDto()
+			{
+				Cpf = "30880150017",
+				Nome = "Fulano Beltrano",
+				Email = "user4@example.com",
+				Nacionalidade = "BRASILEIRO",
+				Nascimento = new DateTime(2021, 5, 2, 0, 0, 0, DateTimeKind.Utc),
+				Senha = "ABC123",
+				ConfirmacaoSenha = "ABC123",
+				UrlFotoDocumento = "http://url.com/foto"
+			};
+
+			var meio4dto = new MeioDePagamentoDto()
+			{
+				NomeTitular = "Fulano Beltrano",
+				Numero = "4012001037141112",
+				Cvv = "132",
+				Validade = new DateTime(2024, 12, 1)
+			};
+
+			var ciclista4 = new Ciclista(ciclista4dto);
+			ciclista4.AtivarCadastro();
+			Database.ArmazenarCiclista(ciclista4);
+
+			var meio4 = new MeioDePagamento(meio4dto);
+			Database.ArmazenarMeioDePagamento(meio4);
+			meio4.SetarIdCiclista(ciclista4.Id);
+
+			// termina ciclista 4
+
+			// começa Funcionário 1
+
+			var dtoFunc = new FuncionarioBaseDto()
+			{
+				Cpf = "99999999999",
+				Nome = "Beltrano",
+				Email = "employee@example.com",
+				Senha = "123",
+				ConfirmacaoSenha = "123",
+				Funcao = "REPARADOR",
+				Idade = 25
+			};
+
+			var dominioFunc = new Funcionario(dtoFunc, false);
+			dominioFunc.ForcarMatricula("12345");
+
+			Database.ArmazenarFuncionario(dominioFunc);
+
+			// termina Funcionário 1
+
+
+
+			// começa aluguel 1
+
+			var reg1 = new RegistroAluguel()
+			{
+				IdBicicleta = 3,
+				IdCiclista = 3,
+				IdTranca = 2,
+				MeioPagamento = meio1.Numero
+			};
+			Database.ArmazenarRegistroAluguel(reg1);
+
+			// termina aluguel 1
+
+
+			// começa aluguel 2
+
+			var reg2 = new RegistroAluguel()
+			{
+				IdBicicleta = 5,
+				IdCiclista = 4,
+				IdTranca = 4,
+				MeioPagamento = meio2.Numero
+			};
+			reg2.ForcarDataRetirada(DateTime.Now.AddHours(-2));
+			Database.ArmazenarRegistroAluguel(reg2);
+
+			// termina aluguel 2
+
+
+
+			// começa aluguel 3
+
+			var reg3 = new RegistroAluguel()
+			{
+				IdBicicleta = 1,
+				IdCiclista = 3,
+				IdTranca = 1,
+				MeioPagamento = meio3.Numero
+			};
+			reg2.ForcarDataRetirada(DateTime.Now.AddHours(-2));
+			Database.ArmazenarRegistroAluguel(reg3);
+
+			var regDev3 = new RegistroDevolucao(DateTime.Now, DateTime.Now, 5, meio3.Numero, 1, 2, reg3);
+			Database.ArmazenarRegistroDevolucao(regDev3);
+
+			// termina aluguel 3
+
+
+			return StatusCode(200);
+		}
 
 		/// <summary>
 		/// Efetua cadastro de um Ciclista
@@ -101,7 +317,7 @@ namespace BikeApi.Controllers
 		/// <summary>
 		/// Verifica se o e-mail já foi utilizado por algum ciclista.
 		/// </summary>
-		/// <param name="idCiclista"></param>
+		/// <param name="email"></param>
 		/// <returns>Http status 200(OK)</returns>
 		/// <response code="200">Email verificado com Sucesso</response> 
 		/// <response code="400">Email não enviado como parâmetro</response>
@@ -162,7 +378,7 @@ namespace BikeApi.Controllers
 		/// <response code="422">Dados para cadastro de Funcionario Inválidos</response> 
 		[HttpPut("funcionario/{idFuncionario}")]
 		[ProducesResponseType(200, Type = typeof(FuncionarioDto))]
-		public IActionResult AlterarFuncionario([FromRoute(Name = "idFuncionario")] int idFuncionario, FuncionarioBaseDto dto)
+		public OkObjectResult AlterarFuncionario([FromRoute(Name = "idFuncionario")] int idFuncionario, FuncionarioBaseDto dto)
 		{
 			return new OkObjectResult(_aluguelServico.AlterarFuncionario(idFuncionario, dto));
 		}
@@ -236,9 +452,25 @@ namespace BikeApi.Controllers
 		/// <response code="422">Dados Inválidos</response> 
 		[HttpPost("aluguel")]
 		[ProducesResponseType(200)]
-		public IActionResult AlterarMeioDePagamento(int ciclista, int trancaInicio)
+		public IActionResult AlugarBicicleta(int ciclista, int trancaInicio)
 		{
 			_aluguelServico.Alugar(ciclista, trancaInicio);
+
+			return StatusCode(200);
+		}
+
+		/// <summary>
+		/// Realiza Devolução de uma Bicicleta Alugada pelo Ciclista
+		/// </summary>
+		/// <returns>Http status 200(OK)</returns>
+		/// <response code="200">Aluguel realizado com Sucesso</response> 
+		/// <response code="404">Ciclista ou Bicicleta com este ID não existe</response> 
+		/// <response code="422">Dados Inválidos</response> 
+		[HttpPost("devolucao")]
+		[ProducesResponseType(200)]
+		public IActionResult DevolverBicicleta(int idTranca, int idBicicleta)
+		{
+			_aluguelServico.Devolver(idTranca, idBicicleta);
 
 			return StatusCode(200);
 		}

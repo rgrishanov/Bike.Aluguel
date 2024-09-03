@@ -52,7 +52,9 @@ namespace Bike.Testes.Unidade.Aplicacao
 				Validade = DateTime.Now.AddYears(1),
 			};
 			var ciclista = new Ciclista(dto.Ciclista);
-			Database.ArmazenarCiclista(ciclista); // só pra dar "email ja em uso"
+			Database.ArmazenarCiclista(ciclista); 
+			
+			// só pra dar "email ja em uso"
 			Assert.Equal("O e-mail informado já está em uso.", Assert.Throws<ArgumentException>(() => _servico.CadastrarCiclista(dto)).Message);
 			Database.ExcluirCiclista(ciclista.Id);
 
