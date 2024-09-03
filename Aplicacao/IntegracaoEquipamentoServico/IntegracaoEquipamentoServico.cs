@@ -7,7 +7,7 @@ namespace BikeApi.Aplicacao.AluguelServico
 	[ExcludeFromCodeCoverage] // Excluindo pois não há como fazer testes de integração na falta de ambiente de testes estável.
 	public class IntegracaoEquipamentoServico : IIntegracaoEquipamentoServico
 	{
-		private static string urlEquipamento = "https://34.95.254.151:3000/api/";
+		private static string urlEquipamento = "http://34.95.254.151:3000/api/";
 
 		public BicicletaDto ObterBicicletaNaTranca(int idTranca)
 		{
