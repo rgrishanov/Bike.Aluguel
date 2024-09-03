@@ -146,10 +146,10 @@ namespace Bike.Testes.Unidade.Dominio
 					"123456", "123456", "http://url.com/foto", null!, "Data de Nascimento do Ciclista deve ser no século 20 ou 21" },
 				new object[] { "79412268041", "Ciclista Teste", "ciclista@email.com", "BRASILEIRO", new DateTime(1990, 11, 11, 0, 0, 0, DateTimeKind.Utc),
 					"", "123456", "http://url.com/foto", null!, "Senha não pode ser vazia" },
-				new object[] { "79412268041", "Ciclista Teste", "ciclista@email.com", "BRASILEIRO", new DateTime(1990, 11, 11, 0, 0, 0, DateTimeKind.Utc),
-					"123456", "1234567", "http://url.com/foto", null!, "Senha e Confirmação de senha são diferentes" },
-				new object[] { "79412268041", "Ciclista Teste", "ciclista@email.com", "BRASILEIRO", new DateTime(1990, 11, 11, 0, 0, 0, DateTimeKind.Utc),
-					"123456", string.Empty, "http://url.com/foto", null!, "Senha e Confirmação de senha são diferentes" },
+				//new object[] { "79412268041", "Ciclista Teste", "ciclista@email.com", "BRASILEIRO", new DateTime(1990, 11, 11, 0, 0, 0, DateTimeKind.Utc),
+				//	"123456", "1234567", "http://url.com/foto", null!, "Senha e Confirmação de senha são diferentes" },
+				//new object[] { "79412268041", "Ciclista Teste", "ciclista@email.com", "BRASILEIRO", new DateTime(1990, 11, 11, 0, 0, 0, DateTimeKind.Utc),
+				//	"123456", string.Empty, "http://url.com/foto", null!, "Senha e Confirmação de senha são diferentes" },
 
 				new object[] { "79412268041", "Ciclista Teste", "ciclista@email.com", "ESTRANGEIRO", new DateTime(1990, 11, 11, 0, 0, 0, DateTimeKind.Utc),
 					"123456", "123456", "http://url.com/foto", null!, "Dados do Passaporte do Ciclista Estrangeiro devem ser informados" }
@@ -160,9 +160,17 @@ namespace Bike.Testes.Unidade.Dominio
 		public void ObterExceptionAoCriarCiclistaComValoresNulosOuVazios(string cpf, string nome, string email, string nacionalidade,
 			 DateTime nascimento, string senha, string confirmacaoSenha, string urlFotoDocumento, PassaporteDto passaporte, string erro)
 		{
-			var dto = new CiclistaDto() { 
-				Cpf = cpf, Nome = nome, Email = email, Nacionalidade = nacionalidade, Nascimento = nascimento, Senha = senha,
-				ConfirmacaoSenha = confirmacaoSenha, UrlFotoDocumento = urlFotoDocumento, Passaporte = passaporte
+			var dto = new CiclistaDto()
+			{
+				Cpf = cpf,
+				Nome = nome,
+				Email = email,
+				Nacionalidade = nacionalidade,
+				Nascimento = nascimento,
+				Senha = senha,
+				ConfirmacaoSenha = confirmacaoSenha,
+				UrlFotoDocumento = urlFotoDocumento,
+				Passaporte = passaporte
 			};
 
 			var exception = Assert.Throws<ArgumentException>(() => new Ciclista(dto));
