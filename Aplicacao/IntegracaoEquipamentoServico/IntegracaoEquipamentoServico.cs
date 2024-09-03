@@ -1,74 +1,166 @@
 ﻿using Bike.Dto.Equipamento;
+using System.Text.Json;
 
 namespace BikeApi.Aplicacao.AluguelServico
 {
 	public class IntegracaoEquipamentoServico : IIntegracaoEquipamentoServico
 	{
+		private static string urlEquipamento = "https://34.95.254.151:3000/api/";
+
 		public BicicletaDto ObterBicicletaNaTranca(int idTranca)
 		{
-			// temp até integrar
-
-			return new BicicletaDto
+			using (HttpClient client = new HttpClient())
 			{
-				Id = 30,
-				Ano = "2021",
-				Marca = "Caloi",
-				Modelo = "Mountain 9000",
-				Numero = 123,
-				Status = "status"
-			};
+				try
+				{
+					HttpResponseMessage response = client.GetAsync(urlEquipamento + $"tranca/{idTranca}/bicicleta").GetAwaiter().GetResult();
+					response.EnsureSuccessStatusCode();
+
+					return JsonSerializer.Deserialize<BicicletaDto>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())!;
+				}
+				catch (Exception ex)
+				{
+					return null!;
+				}
+			}
+
+			//return new BicicletaDto
+			//{
+			//	Id = 30,
+			//	Ano = "2021",
+			//	Marca = "Caloi",
+			//	Modelo = "Mountain 9000",
+			//	Numero = 123,
+			//	Status = "status"
+			//};
 		}
 
 		public BicicletaDto ObterBicicletaPorId(int idBicicleta)
 		{
-			// temp até integrar
-			return new BicicletaDto
+			using (HttpClient client = new HttpClient())
 			{
-				Id = 30,
-				Ano = "2021",
-				Marca = "Caloi",
-				Modelo = "Mountain 9000",
-				Numero = 123,
-				Status = "status"
-			};
+				try
+				{
+					HttpResponseMessage response = client.GetAsync(urlEquipamento + $"bicicleta/{idBicicleta}").GetAwaiter().GetResult();
+					response.EnsureSuccessStatusCode();
+
+					return JsonSerializer.Deserialize<BicicletaDto>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())!;
+				}
+				catch (Exception ex)
+				{
+					return null!;
+				}
+			}
+
+
+			//return new BicicletaDto
+			//{
+			//	Id = 30,
+			//	Ano = "2021",
+			//	Marca = "Caloi",
+			//	Modelo = "Mountain 9000",
+			//	Numero = 123,
+			//	Status = "status"
+			//};
 		}
 
-		public void AlterarStatusBicicleta(int idBicicleta, string novoStatus)
+		public BicicletaDto AlterarStatusBicicleta(int idBicicleta, string novoStatus)
 		{
-			// temp até integrar
+			using (HttpClient client = new HttpClient())
+			{
+				try
+				{
+					HttpResponseMessage response = client.PostAsync(urlEquipamento + $"bicicleta/{idBicicleta}/status/{novoStatus}", null).GetAwaiter().GetResult();
+					response.EnsureSuccessStatusCode();
+
+					return JsonSerializer.Deserialize<BicicletaDto>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())!;
+				}
+				catch (Exception ex)
+				{
+					return null!;
+				}
+			}
 		}
 
 		public void AlterarStatusTranca(int idTranca, string novoStatus)
 		{
-			// temp até integrar
+			using (HttpClient client = new HttpClient())
+			{
+				try
+				{
+					HttpResponseMessage response = client.PostAsync(urlEquipamento + $"tranca/{idTranca}/status/{novoStatus}", null).GetAwaiter().GetResult();
+					response.EnsureSuccessStatusCode();
+				}
+				catch (Exception ex)
+				{
+
+				}
+			}
 		}
 
 		public bool DestrancarTranca(int idTranca)
 		{
-			// temp até integrar
+			using (HttpClient client = new HttpClient())
+			{
+				try
+				{
+					HttpResponseMessage response = client.PostAsync(urlEquipamento + $"tranca/{idTranca}/destrancar", null).GetAwaiter().GetResult();
+					response.EnsureSuccessStatusCode();
 
-			return true;
+					return true;
+				}
+				catch (Exception ex)
+				{
+					return false;
+				}
+			}
 		}
 
 		public bool TrancarTranca(int idTranca)
 		{
-			// temp até integrar
+			using (HttpClient client = new HttpClient())
+			{
+				try
+				{
+					HttpResponseMessage response = client.PostAsync(urlEquipamento + $"tranca/{idTranca}/trancar", null).GetAwaiter().GetResult();
+					response.EnsureSuccessStatusCode();
 
-			return true;
+					return true;
+				}
+				catch (Exception ex)
+				{
+					return false;
+				}
+			}
 		}
 
-		public TrancaDto ObterTrancaPorId(int idBicicleta)
+		public TrancaDto ObterTrancaPorId(int idTranca)
 		{
-			return new TrancaDto()
+			using (HttpClient client = new HttpClient())
 			{
-				AnoDeFabricacao = "2022",
-				Id = 30,
-				Localizacao = "bla",
-				Modelo = "UltraLock 9000",
-				Status = "LIVRE",
-				Bicicleta = idBicicleta,
-				Numero = 123
-			};
+				try
+				{
+					HttpResponseMessage response = client.GetAsync(urlEquipamento + $"tranca/{idTranca}").GetAwaiter().GetResult();
+					response.EnsureSuccessStatusCode();
+
+					return JsonSerializer.Deserialize<TrancaDto>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())!;
+				}
+				catch (Exception ex)
+				{
+					return null!;
+				}
+			}
+
+			//return new TrancaDto()
+			//{
+			//	AnoDeFabricacao = "2022",
+			//	Id = 30,
+			//	Localizacao = "bla",
+			//	Modelo = "UltraLock 9000",
+			//	Status = "LIVRE",
+			//	Bicicleta = idBicicleta,
+			//	Numero = 123
+			//};
 		}
 	}
 }

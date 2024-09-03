@@ -41,7 +41,7 @@ namespace Bike.Dominio.Funcionario.Validacao
 				.NotEmpty()
 				.WithMessage("Senha não pode ser vazia")
 
-				.Equal(x => x.ConfirmacaoSenha)
+				.Equal(x => x.ConfirmacaoSenha).Unless(x => string.IsNullOrEmpty(x.ConfirmacaoSenha))
 				.WithMessage("Senha e Confirmação de senha são diferentes");
 		}
 	}
