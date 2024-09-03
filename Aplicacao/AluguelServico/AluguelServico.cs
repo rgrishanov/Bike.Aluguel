@@ -227,18 +227,18 @@ namespace BikeApi.Aplicacao.AluguelServico
 		public void Devolver(int idTranca, int idBicicleta)
 		{
 			var tranca = this._equipamento.ObterTrancaPorId(idTranca);
-			if (tranca.Status != "LIVRE")
+			if (tranca.Status.ToUpperInvariant() != "LIVRE")
 				throw new ArgumentException("Esta tranca não está disponível para devolver a bicicleta, escolha outra tranca.");
 
 			var bike = this._equipamento.ObterBicicletaPorId(idBicicleta);
 
 			if (bike == null)
-				throw new ArgumentException("Bicicleta om identificador Inválido. Favor entrar em contato com Suporte.");
+				throw new ArgumentException("Bicicleta com identificador Inválido. Favor entrar em contato com Suporte.");
 
-			if (bike.Status != "EM_USO")
+			if (bike.Status.ToUpperInvariant() != "EM_USO")
 				throw new ArgumentException("Esta bicicleta não está em uso. Favor entrar em contato com Suporte.");
 
-			var registroAluguel = Database.ObterRegistroAluguel(idTranca, idBicicleta);
+			var registroAluguel = Database.ObterAluguelAtivoPorBicicleta(idBicicleta);
 			if (registroAluguel == null)
 				throw new ArgumentException("Não foi possivel localizar o registro do aluguel");
 

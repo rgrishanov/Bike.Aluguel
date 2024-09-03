@@ -192,7 +192,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 		}
 
 		[Fact(DisplayName = "Operações Básicas do Funcionário")]
-		public void TesteFuncionário()
+		public void TesteFuncionario()
 		{
 			Assert.Equal("Funcionario com id 123 não existe.", Assert.Throws<EntidadeInexistenteException>(() => _servico.ExcluirFuncionario(123)).Message);
 			Assert.Equal("É obrigatório informar os dados do Funcionário.", Assert.Throws<ArgumentException>(() => _servico.CadastrarFuncionario(null!)).Message);
@@ -208,7 +208,6 @@ namespace Bike.Testes.Unidade.Aplicacao
 				Idade = 33
 			};
 
-			var funcionario = new Funcionario(dto);
 			var retornoSucesso = _servico.CadastrarFuncionario(dto);
 
 			retornoSucesso.Should().NotBeNull();
@@ -271,6 +270,64 @@ namespace Bike.Testes.Unidade.Aplicacao
 			// e por fim exclusão
 			_servico.ExcluirFuncionario(retornoSucesso.Id);
 			Assert.Equal($"Funcionario com id {retornoSucesso.Id} não existe.", Assert.Throws<EntidadeInexistenteException>(() => _servico.ExcluirFuncionario(retornoSucesso.Id)).Message);
+		}
+
+		[Fact(DisplayName = "Obter lista de Todos os Funcionarios")]
+		public void TesteObterFuncionarios()
+		{
+			var dto1 = new FuncionarioBaseDto()
+			{
+				Cpf = "79412268041",
+				Nome = "Funcionario1 Teste",
+				Email = "funcionario1@email.com",
+				Senha = "1123456",
+				ConfirmacaoSenha = "1123456",
+				Funcao = "ADMINISTRATIVO",
+				Idade = 22
+			};
+
+			var retornoSucesso1 = _servico.CadastrarFuncionario(dto1);
+
+			var dto2 = new FuncionarioBaseDto()
+			{
+				Cpf = "79412268041",
+				Nome = "Funcionario2 Teste",
+				Email = "funcionario2@email.com",
+				Senha = "2123456",
+				ConfirmacaoSenha = "2123456",
+				Funcao = "REPARADOR",
+				Idade = 33
+			};
+
+			var retornoSucesso2 = _servico.CadastrarFuncionario(dto2);
+
+			var dto3 = new FuncionarioBaseDto()
+			{
+				Cpf = "79412268041",
+				Nome = "Funcionario3 Teste",
+				Email = "funcionario3@email.com",
+				Senha = "3123456",
+				ConfirmacaoSenha = "3123456",
+				Funcao = "ADMINISTRATIVO",
+				Idade = 55
+			};
+
+			var retornoSucesso3 = _servico.CadastrarFuncionario(dto3);
+
+			/////////////////////////////////////////////////
+			// Obter Funcionarios
+			/////////////////////////////////////////////////
+
+			var retorno = _servico.ObterFuncionarios();
+
+			retorno.Should().NotBeNull();
+			retorno.Count().Should().Be(3);
+
+			retorno.Count(f => f.Funcao == "REPARADOR").Should().Be(1);
+			retorno.Count(f => f.Funcao == "ADMINISTRATIVO").Should().Be(2);
+			retorno.Count(f => f.Senha == "3123456").Should().Be(1);
+			retorno.Count(f => f.Email == "funcionario1@email.com").Should().Be(1);
+			retorno.Sum(f => f.Idade).Should().Be(110);
 		}
 
 		[Fact(DisplayName = "Teste de Alugar e Devolver")]
@@ -386,7 +443,52 @@ namespace Bike.Testes.Unidade.Aplicacao
 			////   agora devolução    ////////////////////////
 			//////////////////////////////////////////////////
 
+			// primeiro erros
 
+			var trancaDto = new TrancaDto() { AnoDeFabricacao = "2024", Localizacao = "Local", Modelo = "Modelo", Status = "teste" };
+			this._equipamento.Setup(x => x.ObterTrancaPorId(It.IsAny<int>())).Returns(trancaDto);
+			Assert.Equal("Esta tranca não está disponível para devolver a bicicleta, escolha outra tranca.", Assert.Throws<ArgumentException>(() => _servico.Devolver(1,1)).Message);
+
+
+			BicicletaDto bikeNull = null!;
+
+			trancaDto.Status = "LIVRE";
+			this._equipamento.Setup(x => x.ObterTrancaPorId(It.IsAny<int>())).Returns(trancaDto);
+			this._equipamento.Setup(x => x.ObterBicicletaPorId(It.IsAny<int>())).Returns(bikeNull!);
+			Assert.Equal("Bicicleta com identificador Inválido. Favor entrar em contato com Suporte.", Assert.Throws<ArgumentException>(() => _servico.Devolver(1, bikeAlugada.Id)).Message);
+		
+
+			var bikeDto = new BicicletaDto() { Ano = "2022", Id = 1, Marca = "xina", Modelo = "Li Ming", Numero = 123, Status = "DISPONIVEL" };
+			this._equipamento.Setup(x => x.ObterTrancaPorId(It.IsAny<int>())).Returns(trancaDto);
+			this._equipamento.Setup(x => x.ObterBicicletaPorId(It.IsAny<int>())).Returns(bikeDto);
+			Assert.Equal("Esta bicicleta não está em uso. Favor entrar em contato com Suporte.", Assert.Throws<ArgumentException>(() => _servico.Devolver(1, 1)).Message);
+
+
+			bikeDto.Status = "EM_USO";
+			this._equipamento.Setup(x => x.ObterTrancaPorId(It.IsAny<int>())).Returns(trancaDto);
+			this._equipamento.Setup(x => x.ObterBicicletaPorId(It.IsAny<int>())).Returns(bikeDto);
+			Assert.Equal("Não foi possivel localizar o registro do aluguel", Assert.Throws<ArgumentException>(() => _servico.Devolver(15, 15)).Message);
+
+
+			// agora fluxo feliz completo 
+
+			this._equipamento.Setup(x => x.ObterTrancaPorId(It.IsAny<int>())).Returns(trancaDto);
+			this._equipamento.Setup(x => x.ObterBicicletaPorId(It.IsAny<int>())).Returns(bikeDto);
+
+			var registro = Database.ObterAluguelAtivoPorBicicleta(bicicletaNaTrancaDto.Id);
+			registro.ForcarDataRetirada(DateTime.Now.AddHours(3)); // pra poder testar, se nao não vai gerar cobrança nova
+
+
+
+			this._integracaoExterna.Setup(x => x.EnviarEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+
+			_servico.Devolver(20, bicicletaNaTrancaDto.Id);
+
+
+			this._integracaoExterna.Verify(x => x.EfetuarCobranca(idCiclista, 10), Times.Exactly(2));
+
+			this._equipamento.Verify(x => x.AlterarStatusBicicleta(bicicletaNaTrancaDto.Id, "DISPONIVEL"), Times.Exactly(1));
+			this._equipamento.Verify(x => x.TrancarTranca(20), Times.Exactly(1));
 
 		}
 	}

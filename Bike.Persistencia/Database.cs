@@ -83,9 +83,9 @@ namespace BikeApi.Persistencia
 			return tabelaRegistroAluguel.Find(r => r.IdCiclista == idCiclista && r.RegistroDevolucao == null)!;
 		}
 
-		public static RegistroAluguel ObterRegistroAluguel(int idTranca, int idBicicleta)
+		public static RegistroAluguel ObterAluguelAtivoPorBicicleta(int idBicicleta)
 		{
-			return tabelaRegistroAluguel.Where(r => r.IdTranca == idTranca && r.IdBicicleta == idBicicleta).FirstOrDefault()!;
+			return tabelaRegistroAluguel.Find(r => r.IdBicicleta == idBicicleta && r.RegistroDevolucao == null)!;
 		}
 	}
 }

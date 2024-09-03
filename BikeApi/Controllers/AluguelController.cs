@@ -20,7 +20,7 @@ namespace BikeApi.Controllers
 	/// </remarks>
 	/// <param name="aluguelServico"></param>
 	[ApiController]
-	[ExcludeFromCodeCoverage] // chamadas ultra simples, e maior parte do código é inserção de dados iniciais
+	[ExcludeFromCodeCoverage] // chamadas ultra simples, e maior parte do código é inserção de dados iniciais que nem faz parte da aplicação
 	public partial class AluguelController(IAluguelServico aluguelServico) : ControllerBase
 	{
 		private readonly IAluguelServico _aluguelServico = aluguelServico;
