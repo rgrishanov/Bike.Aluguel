@@ -188,7 +188,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 
 			_servico.AlterarMeioDePagamentoCiclista(ciclista.Id, dtoMeioPagamentoNovo);
 
-			this._integracaoExterna.Verify(x => x.EnviarEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(5));
+			this._integracaoExterna.Verify(x => x.EnviarEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(6));
 		}
 
 		[Fact(DisplayName = "Operações Básicas do Funcionário")]
