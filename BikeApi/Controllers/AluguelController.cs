@@ -55,7 +55,7 @@ namespace BikeApi.Controllers
 				NomeTitular = "Fulano Beltrano",
 				Numero = "4012001037141112",
 				Cvv = "132",
-				Validade = new DateTime(2024, 12, 1)
+				Validade = new DateTime(2024, 12, 1, 0, 0, 0, DateTimeKind.Utc)
 			};
 
 			var ciclista1 = new Ciclista(ciclista1dto);
@@ -87,7 +87,7 @@ namespace BikeApi.Controllers
 				NomeTitular = "Fulano Beltrano",
 				Numero = "4012001037141112",
 				Cvv = "132",
-				Validade = new DateTime(2024, 12, 1)
+				Validade = new DateTime(2024, 12, 1, 0, 0, 0, DateTimeKind.Utc)
 			};
 
 			var ciclista2 = new Ciclista(ciclista2dto);
@@ -118,7 +118,7 @@ namespace BikeApi.Controllers
 				NomeTitular = "Fulano Beltrano",
 				Numero = "4012001037141112",
 				Cvv = "132",
-				Validade = new DateTime(2024, 12, 1)
+				Validade = new DateTime(2024, 12, 1, 0, 0, 0, DateTimeKind.Utc)
 			};
 
 			var ciclista3 = new Ciclista(ciclista3dto);
@@ -150,7 +150,7 @@ namespace BikeApi.Controllers
 				NomeTitular = "Fulano Beltrano",
 				Numero = "4012001037141112",
 				Cvv = "132",
-				Validade = new DateTime(2024, 12, 1)
+				Validade = new DateTime(2024, 12, 1, 0, 0, 0, DateTimeKind.Utc)
 			};
 
 			var ciclista4 = new Ciclista(ciclista4dto);

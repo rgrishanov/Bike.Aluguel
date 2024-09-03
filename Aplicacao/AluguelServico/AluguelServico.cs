@@ -244,7 +244,7 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 			var ciclista = Database.ObterCiclistaPorId(registroAluguel.IdCiclista);
 
-			var valoraAPagar = this.CalcularValorDevido(registroAluguel.DataHoraRetirada);
+			var valoraAPagar = CalcularValorDevido(registroAluguel.DataHoraRetirada);
 
 			this._integracaoExterna.EfetuarCobranca(ciclista.Id, valoraAPagar);
 
@@ -285,7 +285,7 @@ namespace BikeApi.Aplicacao.AluguelServico
 			return meioPagamentoDominio;
 		}
 
-		private float CalcularValorDevido(DateTime horaRetirada)
+		private static float CalcularValorDevido(DateTime horaRetirada)
 		{
 			var tempoTotal = DateTime.Now - horaRetirada;
 
