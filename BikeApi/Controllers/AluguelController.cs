@@ -8,6 +8,7 @@ using BikeApi.Dominio.Funcionario;
 using BikeApi.Dominio.MeioDePagamento;
 using BikeApi.Persistencia;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BikeApi.Controllers
 {
@@ -19,6 +20,7 @@ namespace BikeApi.Controllers
 	/// </remarks>
 	/// <param name="aluguelServico"></param>
 	[ApiController]
+	[ExcludeFromCodeCoverage] // chamadas ultra simples, e maior parte do código é inserção de dados iniciais
 	public partial class AluguelController(IAluguelServico aluguelServico) : ControllerBase
 	{
 		private readonly IAluguelServico _aluguelServico = aluguelServico;
@@ -277,7 +279,6 @@ namespace BikeApi.Controllers
 		[ProducesResponseType(200, Type = typeof(ObterCiclistaDto))]
 		public OkObjectResult AtivarCadastroCiclista([FromRoute(Name = "idCiclista")] int idCiclista)
 		{
-
 			return new OkObjectResult(_aluguelServico.AtivarCiclista(idCiclista));
 		}
 
