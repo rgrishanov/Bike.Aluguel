@@ -270,11 +270,11 @@ namespace Bike.Testes.Unidade.Aplicacao
 			// e por fim exclusão
 			_servico.ExcluirFuncionario(retornoSucesso.Id);
 			Assert.Equal($"Funcionario com id {retornoSucesso.Id} não existe.", Assert.Throws<EntidadeInexistenteException>(() => _servico.ExcluirFuncionario(retornoSucesso.Id)).Message);
-		}
 
-		[Fact(DisplayName = "Obter lista de Todos os Funcionarios")]
-		public void TesteObterFuncionarios()
-		{
+
+
+			// teste de obter lista:
+
 			var dto1 = new FuncionarioBaseDto()
 			{
 				Cpf = "79412268041",
