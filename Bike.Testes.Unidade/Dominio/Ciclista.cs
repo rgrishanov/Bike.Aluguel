@@ -61,6 +61,13 @@ namespace Bike.Testes.Unidade.Dominio
 			dominioEs.Passaporte!.Pais.Should().Be(dto.Passaporte!.Pais);
 			dominioEs.Passaporte!.Validade.Should().Be(dto.Passaporte!.Validade);
 
+			var dtoRetornoEs = dominioEs.MapearParaDto();
+			dtoRetornoEs.Should().NotBeNull();
+			dtoRetornoEs.Cpf.Should().BeNull();
+			dtoRetornoEs.Passaporte!.Numero.Should().Be(dominioEs.Passaporte.Numero);
+			dtoRetornoEs.Passaporte!.Pais.Should().Be(dominioEs.Passaporte.Pais);
+			dtoRetornoEs.Passaporte!.Validade.Should().Be(dominioEs.Passaporte.Validade);
+
 			Assert.Equal(0, dominioBr.Id);
 			Assert.Equal(0, dominioEs.Id);
 
@@ -73,6 +80,10 @@ namespace Bike.Testes.Unidade.Dominio
 			// ativar cadastro
 
 			dominioBr.AtivarCadastro();
+
+			var exception5 = Assert.Throws<ArgumentException>(() => dominioBr.AtivarCadastro());
+			Assert.Equal("Este ciclista já está Ativo.", exception5.Message);
+
 			Assert.Equal("ATIVO", dominioBr.Status);
 			dominioBr.AtivoDesde.Should().BeCloseTo(DateTime.Now, new TimeSpan(0, 0, 2));
 

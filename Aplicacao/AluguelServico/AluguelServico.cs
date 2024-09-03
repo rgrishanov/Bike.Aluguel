@@ -103,7 +103,11 @@ namespace BikeApi.Aplicacao.AluguelServico
 		public bool CiclistaPodeAlugar(int idCiclista)
 		{
 			// só pra ver se existe, se nao isso já dá exception
-			ObterCiclistaDominio(idCiclista);
+			var ciclista = ObterCiclistaDominio(idCiclista);
+
+			// se não está ativo - não pode alugar
+			if (ciclista.Status != "ATIVO")
+				return false;
 
 			return Database.ObterAluguelAtivo(idCiclista) == null;
 		}

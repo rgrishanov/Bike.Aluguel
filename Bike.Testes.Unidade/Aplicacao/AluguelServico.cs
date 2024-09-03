@@ -44,6 +44,8 @@ namespace Bike.Testes.Unidade.Aplicacao
 			};
 			Assert.Equal("É obrigatório informar os dados de Meio do Pagamento.", Assert.Throws<ArgumentException>(() => _servico.CadastrarCiclista(dto)).Message);
 
+			Assert.False(_servico.EmailJaEstaEmUso(dto.Ciclista.Email));
+
 			dto.MeioDePagamento = new MeioDePagamentoDto()
 			{
 				NomeTitular = "Nome Titular",
@@ -52,8 +54,10 @@ namespace Bike.Testes.Unidade.Aplicacao
 				Validade = DateTime.Now.AddYears(1),
 			};
 			var ciclista = new Ciclista(dto.Ciclista);
-			Database.ArmazenarCiclista(ciclista); 
-			
+			Database.ArmazenarCiclista(ciclista);
+
+			Assert.True(_servico.EmailJaEstaEmUso(dto.Ciclista.Email));
+
 			// só pra dar "email ja em uso"
 			Assert.Equal("O e-mail informado já está em uso.", Assert.Throws<ArgumentException>(() => _servico.CadastrarCiclista(dto)).Message);
 			Database.ExcluirCiclista(ciclista.Id);
@@ -178,8 +182,8 @@ namespace Bike.Testes.Unidade.Aplicacao
 			this._integracaoExterna.Verify(x => x.EnviarEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(5));
 		}
 
-		[Fact(DisplayName = "Teste de Alugar")]
-		public void TesteAlugar()
+		[Fact(DisplayName = "Teste de Alugar e Devolver")]
+		public void TesteAlugarDevolver()
 		{
 			CadastroCiclistaInicialDto dto = new CadastroCiclistaInicialDto();
 			dto.Ciclista = new CiclistaDto()
@@ -209,7 +213,13 @@ namespace Bike.Testes.Unidade.Aplicacao
 
 			Assert.Equal("Ciclista não está ativo e não pode efetuar aluguel.", Assert.Throws<ArgumentException>(() => _servico.Alugar(idCiclista, 123)).Message);
 
+			// não pode alugar se nao ativado
+			Assert.False(_servico.CiclistaPodeAlugar(idCiclista));
+
 			var retornoSucessoAtiv = _servico.AtivarCiclista(idCiclista);
+
+			Assert.True(_servico.CiclistaPodeAlugar(idCiclista));
+			Assert.Null(_servico.ObterBicicletaAlugada(idCiclista));
 
 			// ciclista criado e ativado, vamos alugar pra ele
 
@@ -255,10 +265,38 @@ namespace Bike.Testes.Unidade.Aplicacao
 
 			_servico.Alugar(idCiclista, 123);
 
+			// não pode alugar pq ja alugou
+			Assert.False(_servico.CiclistaPodeAlugar(idCiclista));
+
+			var dtoBikeAlugada = new BicicletaDto
+			{
+				Id = 30,
+				Ano = "2021",
+				Marca = "Caloi",
+				Modelo = "Mountain 9000",
+				Numero = 123,
+				Status = "EM_USO"
+			};
+			this._equipamento.Setup(x => x.ObterBicicletaPorId(It.IsAny<int>())).Returns(dtoBikeAlugada);
+			var bikeAlugada = _servico.ObterBicicletaAlugada(idCiclista);
+
+			bikeAlugada.Should().NotBeNull();
+			bikeAlugada.Status.Should().Be("EM_USO");
+			bikeAlugada.Marca.Should().Be(bicicletaNaTrancaDto.Marca);
+			bikeAlugada.Modelo.Should().Be(bicicletaNaTrancaDto.Modelo);
+
 			this._equipamento.Verify(x => x.AlterarStatusBicicleta(It.IsAny<int>(), "EM_USO"), Times.Exactly(2));
 			this._integracaoExterna.Verify(x => x.EfetuarCobranca(It.IsAny<int>(), It.IsAny<float>()), Times.Exactly(2));
 
 			this._equipamento.Verify(x => x.AlterarStatusTranca(It.IsAny<int>(), "DESTRANCAR"), Times.Exactly(1));
+
+
+			//////////////////////////////////////////////////
+			////   agora devolução    ////////////////////////
+			//////////////////////////////////////////////////
+			
+
+
 		}
 	}
 }

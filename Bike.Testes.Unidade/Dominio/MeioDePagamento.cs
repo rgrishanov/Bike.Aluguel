@@ -1,5 +1,6 @@
 using Bike.Dto.Ciclista;
 using BikeApi.Dominio.MeioDePagamento;
+using FluentAssertions;
 
 namespace Bike.Testes.Unidade.Dominio
 {
@@ -37,6 +38,14 @@ namespace Bike.Testes.Unidade.Dominio
 
 			var exception2 = Assert.Throws<ArgumentException>(() => dominio.SetarIdCiclista(100));
 			Assert.Equal("Não é possível alterar o IdCiclista do Meio de Pagamento.", exception2.Message);
+
+
+			var meioDto = dominio.MapearParaDto();
+			meioDto.NomeTitular.Should().Be(dto.NomeTitular);
+			meioDto.Numero.Should().Be(dto.Numero);
+			meioDto.Validade.Should().Be(dto.Validade);
+			meioDto.Cvv.Should().Be(dto.Cvv);
+			meioDto.Id.Should().Be(dominio.Id);
 		}
 
 		public static IEnumerable<object[]> DadosPraTestesException =>

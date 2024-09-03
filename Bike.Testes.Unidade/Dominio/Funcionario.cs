@@ -67,6 +67,17 @@ namespace Bike.Testes.Unidade.Dominio
 			Assert.True(dominio.Matricula.StartsWith("2024") && dominio.Matricula.Length == 11);
 
 			dominio.Id.Should().BeGreaterThan(0);
+
+			dominio.ForcarMatricula("12345");
+			dominio.Matricula.Should().Be("12345");
+
+			var dtoRetorno = dominio.MapearParaDto();
+			dtoRetorno.Cpf.Should().Be(dtoAlteracao.Cpf);
+			dtoRetorno.Email.Should().Be(dtoAlteracao.Email);
+			dtoRetorno.Senha.Should().Be(dtoAlteracao.Senha);
+			dtoRetorno.Nome.Should().Be(dtoAlteracao.Nome);
+			dtoRetorno.Funcao.Should().Be(dtoRetorno.Funcao);
+			dtoRetorno.Idade.Should().Be(dtoRetorno.Idade);
 		}
 	}
 }
