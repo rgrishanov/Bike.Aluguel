@@ -2,8 +2,10 @@ using Bike.Dominio;
 using Bike.Dominio.Aluguel;
 using Bike.Dto.Ciclista;
 using Bike.Dto.Equipamento;
+using Bike.Dto.Funcionario;
 using BikeApi.Aplicacao.AluguelServico;
 using BikeApi.Dominio.Ciclista;
+using BikeApi.Dominio.Funcionario;
 using BikeApi.Dominio.MeioDePagamento;
 using BikeApi.Persistencia;
 using FluentAssertions;
@@ -26,7 +28,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 		}
 
 		[Fact(DisplayName = "Operações Básicas do Ciclista")]
-		public void TesteCriacao()
+		public void TesteCiclista()
 		{
 			CadastroCiclistaInicialDto dto = new CadastroCiclistaInicialDto();
 			Assert.Equal("É obrigatório informar os dados do Ciclista.", Assert.Throws<ArgumentException>(() => _servico.CadastrarCiclista(dto)).Message);
@@ -45,6 +47,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 			Assert.Equal("É obrigatório informar os dados de Meio do Pagamento.", Assert.Throws<ArgumentException>(() => _servico.CadastrarCiclista(dto)).Message);
 
 			Assert.False(_servico.EmailJaEstaEmUso(dto.Ciclista.Email));
+			Assert.Equal("Informe o e-mail que gostaria de verificar.", Assert.Throws<ArgumentException>(() => _servico.EmailJaEstaEmUso("")).Message);
 
 			dto.MeioDePagamento = new MeioDePagamentoDto()
 			{
@@ -83,6 +86,12 @@ namespace Bike.Testes.Unidade.Aplicacao
 			Assert.Equal("AGUARDANDO_CONFIRMACAO", retornoSucesso.Status);
 			retornoSucesso.Id.Should().BeGreaterThan(0);
 
+
+			var meioPagamentoDto = _servico.ObterMeioDePagamentoCiclista(retornoSucesso.Id);
+			meioPagamentoDto.Should().NotBeNull();
+			meioPagamentoDto.NomeTitular.Should().Be(dto.MeioDePagamento.NomeTitular);
+			meioPagamentoDto.Cvv.Should().Be(dto.MeioDePagamento.Cvv);
+			meioPagamentoDto.Numero.Should().Be(dto.MeioDePagamento.Numero);
 
 
 			/////////////////////////////////////////////////
@@ -145,7 +154,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 			this._integracaoExterna.SetupSequence(x => x.EnviarEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false).Returns(true);
 			Assert.Equal("Não foi possível enviar o e-mail de confirmação das Alterações do cadastro.", Assert.Throws<ArgumentException>(() => _servico.AlterarCiclista(ciclista.Id, dtoAlteracao)).Message);
 
-			var retornoSucessoAlterar = _servico.ObterCiclista(ciclista.Id);
+			var retornoSucessoAlterar = _servico.AlterarCiclista(ciclista.Id, dtoAlteracao);
 
 			retornoSucessoAlterar.Should().NotBeNull();
 			Assert.Equal(dtoAlteracao.Cpf, retornoSucessoAlterar.Cpf);
@@ -180,6 +189,88 @@ namespace Bike.Testes.Unidade.Aplicacao
 			_servico.AlterarMeioDePagamentoCiclista(ciclista.Id, dtoMeioPagamentoNovo);
 
 			this._integracaoExterna.Verify(x => x.EnviarEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(5));
+		}
+
+		[Fact(DisplayName = "Operações Básicas do Funcionário")]
+		public void TesteFuncionário()
+		{
+			Assert.Equal("Funcionario com id 123 não existe.", Assert.Throws<EntidadeInexistenteException>(() => _servico.ExcluirFuncionario(123)).Message);
+			Assert.Equal("É obrigatório informar os dados do Funcionário.", Assert.Throws<ArgumentException>(() => _servico.CadastrarFuncionario(null!)).Message);
+
+			var dto = new FuncionarioBaseDto()
+			{
+				Cpf = "79412268041",
+				Nome = "Funcionario Teste",
+				Email = "funcionario@email.com",
+				Senha = "123456",
+				ConfirmacaoSenha = "123456",
+				Funcao = "ADMINISTRATIVO",
+				Idade = 33
+			};
+
+			var funcionario = new Funcionario(dto);
+			var retornoSucesso = _servico.CadastrarFuncionario(dto);
+
+			retornoSucesso.Should().NotBeNull();
+			retornoSucesso.Email.Should().Be(dto.Email);
+			retornoSucesso.Senha.Should().Be(dto.Senha);
+			retornoSucesso.Funcao.Should().Be(dto.Funcao);
+			retornoSucesso.Idade.Should().Be(dto.Idade);
+			retornoSucesso.Cpf.Should().Be(dto.Cpf);
+			retornoSucesso.Nome.Should().Be(dto.Nome);
+			retornoSucesso.Matricula.Length.Should().Be(11);
+			retornoSucesso.Id.Should().Be(1);
+
+
+			/////////////////////////////////////////////////
+			// Obter Funcionario
+			/////////////////////////////////////////////////
+
+			var retornoSucessoObter = _servico.ObterFuncionario(retornoSucesso.Id);
+
+			retornoSucessoObter.Should().NotBeNull();
+			retornoSucessoObter.Should().NotBeNull();
+			retornoSucessoObter.Email.Should().Be(dto.Email);
+			retornoSucessoObter.Senha.Should().Be(dto.Senha);
+			retornoSucessoObter.Funcao.Should().Be(dto.Funcao);
+			retornoSucessoObter.Idade.Should().Be(dto.Idade);
+			retornoSucessoObter.Cpf.Should().Be(dto.Cpf);
+			retornoSucessoObter.Nome.Should().Be(dto.Nome);
+			retornoSucessoObter.Matricula.Length.Should().Be(11);
+			retornoSucessoObter.Id.Should().Be(1);
+
+
+
+			/////////////////////////////////////////////////
+			// Alterar Funcionario
+			/////////////////////////////////////////////////
+
+			var dtoAlteracao = new FuncionarioBaseDto()
+			{
+				Cpf = "05470701794",
+				Nome = "Funcionario Teste Alterado",
+				Email = "funcionario@email.Alterado.com",
+				Senha = "123456Alterado",
+				ConfirmacaoSenha = "123456Alterado",
+				Funcao = "REPARADOR",
+				Idade = 39
+			};
+
+			var retornoSucessoAlterar = _servico.AlterarFuncionario(retornoSucesso.Id, dtoAlteracao);
+
+			retornoSucessoAlterar.Should().NotBeNull();
+			retornoSucessoAlterar.Email.Should().Be(dtoAlteracao.Email);
+			retornoSucessoAlterar.Senha.Should().Be(dtoAlteracao.Senha);
+			retornoSucessoAlterar.Funcao.Should().Be(dtoAlteracao.Funcao);
+			retornoSucessoAlterar.Idade.Should().Be(dtoAlteracao.Idade);
+			retornoSucessoAlterar.Cpf.Should().Be(dtoAlteracao.Cpf);
+			retornoSucessoAlterar.Nome.Should().Be(dtoAlteracao.Nome);
+			retornoSucessoAlterar.Matricula.Length.Should().Be(11);
+			retornoSucessoAlterar.Id.Should().Be(1);
+
+			// e por fim exclusão
+			_servico.ExcluirFuncionario(retornoSucesso.Id);
+			Assert.Equal($"Funcionario com id {retornoSucesso.Id} não existe.", Assert.Throws<EntidadeInexistenteException>(() => _servico.ExcluirFuncionario(retornoSucesso.Id)).Message);
 		}
 
 		[Fact(DisplayName = "Teste de Alugar e Devolver")]
@@ -294,7 +385,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 			//////////////////////////////////////////////////
 			////   agora devolução    ////////////////////////
 			//////////////////////////////////////////////////
-			
+
 
 
 		}

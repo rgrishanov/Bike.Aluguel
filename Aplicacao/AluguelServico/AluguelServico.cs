@@ -128,7 +128,7 @@ namespace BikeApi.Aplicacao.AluguelServico
 		public bool EmailJaEstaEmUso(string email)
 		{
 			if (string.IsNullOrEmpty(email))
-				throw new FormatException("email");
+				throw new ArgumentException("Informe o e-mail que gostaria de verificar.");
 
 			return Database.EmailJaEstaEmUso(email);
 		}
@@ -153,6 +153,9 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 		public void ExcluirFuncionario(int idFuncionario)
 		{
+			// só pra ver se existe
+			ObterFuncionarioDominio(idFuncionario);
+
 			Database.ExcluirFuncionario(idFuncionario);
 		}
 

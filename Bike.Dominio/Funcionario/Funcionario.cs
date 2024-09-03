@@ -71,7 +71,8 @@ namespace BikeApi.Dominio.Funcionario
 				Matricula = this.Matricula,
 				Senha = this.Senha,
 				ConfirmacaoSenha = this.Senha,
-				Funcao = this.Funcao
+				Funcao = this.Funcao,
+				Id = this.Id
 			};
 
 			return dto;
