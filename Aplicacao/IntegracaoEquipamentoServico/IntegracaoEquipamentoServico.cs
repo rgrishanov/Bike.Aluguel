@@ -9,6 +9,11 @@ namespace BikeApi.Aplicacao.AluguelServico
 	{
 		private static string urlEquipamento = "http://34.95.254.151:3000/api/";
 
+		JsonSerializerOptions options = new JsonSerializerOptions
+		{
+			PropertyNameCaseInsensitive = true
+		};
+
 		public BicicletaDto ObterBicicletaNaTranca(int idTranca)
 		{
 			using (HttpClient client = new HttpClient())
@@ -20,7 +25,9 @@ namespace BikeApi.Aplicacao.AluguelServico
 					HttpResponseMessage response = client.GetAsync(url).GetAwaiter().GetResult();
 					response.EnsureSuccessStatusCode();
 
-					return JsonSerializer.Deserialize<BicicletaDto>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())!;
+					var content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+					return JsonSerializer.Deserialize<BicicletaDto>(content, options)!;
 				}
 				catch (Exception ex)
 				{
@@ -48,7 +55,7 @@ namespace BikeApi.Aplicacao.AluguelServico
 					HttpResponseMessage response = client.GetAsync(urlEquipamento + $"bicicleta/{idBicicleta}").GetAwaiter().GetResult();
 					response.EnsureSuccessStatusCode();
 
-					return JsonSerializer.Deserialize<BicicletaDto>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())!;
+					return JsonSerializer.Deserialize<BicicletaDto>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult(), options)!;
 				}
 				catch (Exception ex)
 				{
@@ -77,7 +84,7 @@ namespace BikeApi.Aplicacao.AluguelServico
 					HttpResponseMessage response = client.PostAsync(urlEquipamento + $"bicicleta/{idBicicleta}/status/{novoStatus}", null).GetAwaiter().GetResult();
 					response.EnsureSuccessStatusCode();
 
-					return JsonSerializer.Deserialize<BicicletaDto>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())!;
+					return JsonSerializer.Deserialize<BicicletaDto>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult(), options)!;
 				}
 				catch (Exception ex)
 				{
@@ -108,7 +115,9 @@ namespace BikeApi.Aplicacao.AluguelServico
 			{
 				try
 				{
-					HttpResponseMessage response = client.PostAsync(urlEquipamento + $"tranca/{idTranca}/destrancar", null).GetAwaiter().GetResult();
+					string url = urlEquipamento + $"tranca/{idTranca}/destrancar";
+
+					HttpResponseMessage response = client.PostAsync(url, null).GetAwaiter().GetResult();
 					response.EnsureSuccessStatusCode();
 
 					return true;
@@ -147,7 +156,7 @@ namespace BikeApi.Aplicacao.AluguelServico
 					HttpResponseMessage response = client.GetAsync(urlEquipamento + $"tranca/{idTranca}").GetAwaiter().GetResult();
 					response.EnsureSuccessStatusCode();
 
-					return JsonSerializer.Deserialize<TrancaDto>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())!;
+					return JsonSerializer.Deserialize<TrancaDto>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult(), options)!;
 				}
 				catch (Exception ex)
 				{

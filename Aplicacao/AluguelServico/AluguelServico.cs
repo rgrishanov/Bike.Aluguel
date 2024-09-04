@@ -246,7 +246,8 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 			var valoraAPagar = CalcularValorDevido(registroAluguel.DataHoraRetirada);
 
-			this._integracaoExterna.EfetuarCobranca(ciclista.Id, valoraAPagar);
+			if (valoraAPagar > 0)
+				this._integracaoExterna.EfetuarCobranca(ciclista.Id, valoraAPagar);
 
 			var cartao = Database.ObterMeioDePagamentoPorIdCiclista(ciclista.Id);
 			var regDevolucao = new RegistroDevolucao(DateTime.Now, DateTime.Now, valoraAPagar, cartao.Numero, idBicicleta, idTranca, registroAluguel);
