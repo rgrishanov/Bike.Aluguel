@@ -1,6 +1,7 @@
 ﻿using Bike.Dominio.Ciclista.Validacao;
 using Bike.Dominio.Validacao;
 using Bike.Dto.Ciclista;
+using System.Globalization;
 
 namespace BikeApi.Dominio.MeioDePagamento
 {
@@ -19,7 +20,7 @@ namespace BikeApi.Dominio.MeioDePagamento
 
 			NomeTitular = dto.NomeTitular;
 			Numero = dto.Numero;
-			Validade = DateTime.ParseExact(dto.Validade!, "yyyy-MM-dd", null);
+			Validade = DateTime.ParseExact(dto.Validade!, "yyyy-MM-dd", CultureInfo.GetCultureInfo("pt-BR"));
 			Cvv = dto.Cvv;
 		}
 

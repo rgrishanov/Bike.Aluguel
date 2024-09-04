@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Bike.Dto.Ciclista;
 using Bike.Dominio.Validacao;
+using System.Globalization;
 
 namespace Bike.Dominio.Ciclista.Validacao
 {
@@ -11,9 +12,9 @@ namespace Bike.Dominio.Ciclista.Validacao
 			this.RuleFor(x => x.Nome)
 				.NotEmpty().WithMessage("Nome do Ciclista não pode ser vazio");
 
-			this.RuleFor(x => DateTime.ParseExact(x.Nascimento!, "yyyy-MM-dd", null))
+			this.RuleFor(x => DateTime.ParseExact(x.Nascimento!, "yyyy-MM-dd", CultureInfo.GetCultureInfo("pt-BR")))
 				.LessThan(DateTime.Now)
-				.WithMessage("Data de Nascimento do Ciclista deve ser anterior a hoje").Unless(x => DateTime.ParseExact(x.Nascimento!, "yyyy-MM-dd", null) < new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+				.WithMessage("Data de Nascimento do Ciclista deve ser anterior a hoje").Unless(x => DateTime.ParseExact(x.Nascimento!, "yyyy-MM-dd", CultureInfo.GetCultureInfo("pt-BR")) < new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc))
 
 				.GreaterThan(new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc))
 				.WithMessage("Data de Nascimento do Ciclista deve ser no século 20 ou 21");

@@ -26,8 +26,6 @@ namespace BikeApi.Aplicacao.AluguelServico
 
 					var result = client.PostAsync(urlServicoExterno + "validaCartaoDeCredito", content).GetAwaiter().GetResult();
 
-					var retorno = result.Content.ReadAsStringAsync();
-
 					return result.IsSuccessStatusCode;
 				}
 				catch

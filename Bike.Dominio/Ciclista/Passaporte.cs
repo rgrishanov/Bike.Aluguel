@@ -1,6 +1,7 @@
 ﻿using Bike.Dominio.Ciclista.Validacao;
 using Bike.Dominio.Validacao;
 using Bike.Dto.Ciclista;
+using System.Globalization;
 
 namespace BikeApi.Dominio.Ciclista
 {
@@ -15,7 +16,7 @@ namespace BikeApi.Dominio.Ciclista
 			Validador.Validar(dto, new PassaporteValidacao());
 
 			Numero = dto.Numero!;
-			Validade = DateTime.ParseExact(dto.Validade!, "yyyy-MM-dd", null);
+			Validade = DateTime.ParseExact(dto.Validade!, "yyyy-MM-dd", CultureInfo.GetCultureInfo("pt-BR"));
 			Pais = dto.Pais!;
 		}
     }

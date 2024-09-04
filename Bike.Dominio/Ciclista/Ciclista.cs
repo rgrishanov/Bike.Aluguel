@@ -1,6 +1,7 @@
 ﻿using Bike.Dominio.Ciclista.Validacao;
 using Bike.Dominio.Validacao;
 using Bike.Dto.Ciclista;
+using System.Globalization;
 
 namespace BikeApi.Dominio.Ciclista
 {
@@ -68,7 +69,7 @@ namespace BikeApi.Dominio.Ciclista
 		private void PreencherCamposBasicos(CiclistaDto dto)
 		{
 			this.Nome = dto.Nome!;
-			this.Nascimento = DateTime.ParseExact(dto.Nascimento!, "yyyy-MM-dd", null);
+			this.Nascimento = DateTime.ParseExact(dto.Nascimento!, "yyyy-MM-dd", CultureInfo.GetCultureInfo("pt-BR"));
 			this.Cpf = dto.Cpf!;
 			this.Nacionalidade = dto.Nacionalidade!;
 			this.Email = dto.Email!;

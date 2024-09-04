@@ -1,5 +1,6 @@
 ﻿using Bike.Dto.Ciclista;
 using FluentValidation;
+using System.Globalization;
 
 namespace Bike.Dominio.Ciclista.Validacao
 {
@@ -10,7 +11,7 @@ namespace Bike.Dominio.Ciclista.Validacao
 			this.RuleFor(p => p.Numero)
 				.NotEmpty().WithMessage("Numero do Passaporte não pode ser vazio");
 
-			this.RuleFor(p => DateTime.ParseExact(p.Validade!, "yyyy-MM-dd", null)).Cascade(CascadeMode.Stop)
+			this.RuleFor(p => DateTime.ParseExact(p.Validade!, "yyyy-MM-dd", CultureInfo.GetCultureInfo("pt-BR"))).Cascade(CascadeMode.Stop)
 
 				.GreaterThan(new DateTime(1980, 1, 1, 0, 0, 0, DateTimeKind.Utc))
 				.WithMessage("Data de Validade do Passaporte deve ser preenchida")
