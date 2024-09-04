@@ -7,10 +7,6 @@ namespace BikeApi.Aplicacao.AluguelServico
 	public class IntegracaoExternoServico : IIntegracaoExternoServico
 	{
 		private static string urlServicoExterno = "http://ec2-54-226-108-79.compute-1.amazonaws.com/";
-		JsonSerializerOptions options = new JsonSerializerOptions
-		{
-			PropertyNameCaseInsensitive = true
-		};
 
 		public bool MeioPagamnentoValido(MeioDePagamento meioDePagamento)
 		{
