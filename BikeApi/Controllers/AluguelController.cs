@@ -45,7 +45,7 @@ namespace BikeApi.Controllers
 				Nome = "Fulano Beltrano",
 				Email = "user@example.com",
 				Nacionalidade = "BRASILEIRO",
-				Nascimento = "2021-5-2",
+				Nascimento = "2021-05-02",
 				Senha = "ABC123",
 				ConfirmacaoSenha = "ABC123",
 				UrlFotoDocumento = "http://url.com/foto"
@@ -55,7 +55,7 @@ namespace BikeApi.Controllers
 				NomeTitular = "Fulano Beltrano",
 				Numero = "4012001037141112",
 				Cvv = "132",
-				Validade = "2024-12-1"
+				Validade = "2024-12-01"
 			};
 
 			var ciclista1 = new Ciclista(ciclista1dto);
@@ -76,7 +76,7 @@ namespace BikeApi.Controllers
 				Nome = "Fulano Beltrano",
 				Email = "user2@example.com",
 				Nacionalidade = "BRASILEIRO",
-				Nascimento = "2021-5-2",
+				Nascimento = "2021-05-02",
 				Senha = "ABC123",
 				ConfirmacaoSenha = "ABC123",
 				UrlFotoDocumento = "http://url.com/foto"
@@ -87,7 +87,7 @@ namespace BikeApi.Controllers
 				NomeTitular = "Fulano Beltrano",
 				Numero = "4012001037141112",
 				Cvv = "132",
-				Validade = "2024-12-1"
+				Validade = "2024-12-01"
 			};
 
 			var ciclista2 = new Ciclista(ciclista2dto);
@@ -107,7 +107,7 @@ namespace BikeApi.Controllers
 				Nome = "Fulano Beltrano",
 				Email = "user3@example.com",
 				Nacionalidade = "BRASILEIRO",
-				Nascimento = "2021-5-2",
+				Nascimento = "2021-05-02",
 				Senha = "ABC123",
 				ConfirmacaoSenha = "ABC123",
 				UrlFotoDocumento = "http://url.com/foto"
@@ -118,7 +118,7 @@ namespace BikeApi.Controllers
 				NomeTitular = "Fulano Beltrano",
 				Numero = "4012001037141112",
 				Cvv = "132",
-				Validade = "2024-12-1"
+				Validade = "2024-12-01"
 			};
 
 			var ciclista3 = new Ciclista(ciclista3dto);
@@ -139,7 +139,7 @@ namespace BikeApi.Controllers
 				Nome = "Fulano Beltrano",
 				Email = "user4@example.com",
 				Nacionalidade = "BRASILEIRO",
-				Nascimento = "2021-5-2",
+				Nascimento = "2021-05-02",
 				Senha = "ABC123",
 				ConfirmacaoSenha = "ABC123",
 				UrlFotoDocumento = "http://url.com/foto"
@@ -150,7 +150,7 @@ namespace BikeApi.Controllers
 				NomeTitular = "Fulano Beltrano",
 				Numero = "4012001037141112",
 				Cvv = "132",
-				Validade = "2024-12-1"
+				Validade = "2024-12-01"
 			};
 
 			var ciclista4 = new Ciclista(ciclista4dto);
