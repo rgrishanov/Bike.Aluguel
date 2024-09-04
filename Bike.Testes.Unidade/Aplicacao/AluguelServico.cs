@@ -39,7 +39,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 				Nome = "Ciclista Teste",
 				Email = "ciclista@email.com",
 				Nacionalidade = "BRASILEIRO",
-				Nascimento = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+				Nascimento = "1990-01-01",
 				Senha = "123456",
 				ConfirmacaoSenha = "123456",
 				UrlFotoDocumento = "http://url.com/foto"
@@ -54,7 +54,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 				NomeTitular = "Nome Titular",
 				Numero = "1234567890123456",
 				Cvv = "123",
-				Validade = DateTime.Now.AddYears(1),
+				Validade = DateTime.Now.AddYears(1).ToString("yyyy-MM-dd"),
 			};
 			var ciclista = new Ciclista(dto.Ciclista);
 			Database.ArmazenarCiclista(ciclista);
@@ -145,7 +145,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 				Nome = "Ciclista Teste Alterado",
 				Email = "ciclista@email.alterado.com",
 				Nacionalidade = "BRASILEIRO",
-				Nascimento = new DateTime(1992, 6, 6, 0, 0, 0, DateTimeKind.Utc),
+				Nascimento = "1992-06-06",
 				Senha = "123456!@#",
 				ConfirmacaoSenha = "123456!@#",
 				UrlFotoDocumento = "http://url.com/foto/Alterada.jpg"
@@ -178,7 +178,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 				NomeTitular = "Nome Titular NOVO",
 				Numero = "098765432109876",
 				Cvv = "998",
-				Validade = DateTime.Now.AddYears(5),
+				Validade = DateTime.Now.AddYears(5).ToString("yyyy-MM-dd"),
 			};
 
 			this._integracaoExterna.Setup(x => x.MeioPagamnentoValido(It.IsAny<MeioDePagamento>())).Returns(true);
@@ -340,7 +340,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 				Nome = "Ciclista Teste",
 				Email = "ciclista@email.existente.com",
 				Nacionalidade = "BRASILEIRO",
-				Nascimento = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+				Nascimento = "1990-01-01",
 				Senha = "123456",
 				ConfirmacaoSenha = "123456",
 				UrlFotoDocumento = "http://url.com/foto"
@@ -350,7 +350,7 @@ namespace Bike.Testes.Unidade.Aplicacao
 				NomeTitular = "Nome Titular",
 				Numero = "1234567890123456",
 				Cvv = "123",
-				Validade = DateTime.Now.AddYears(1),
+				Validade = DateTime.Now.AddYears(1).ToString("yyyy-MM-dd"),
 			};
 
 			this._integracaoExterna.SetupSequence(x => x.MeioPagamnentoValido(It.IsAny<MeioDePagamento>())).Returns(true);

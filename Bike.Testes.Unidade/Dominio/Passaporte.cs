@@ -12,14 +12,14 @@ namespace Bike.Testes.Unidade.Dominio
 			{
 				Numero = "1234567890123456",
 				Pais = "Brasil",
-				Validade = DateTime.Now.AddYears(1),
+				Validade = DateTime.Now.AddYears(1).ToString("yyyy-MM-dd"),
 			};
 
 			var dominio = new Passaporte(dto);
 
 			Assert.Equal(dominio.Numero, dto.Numero);
 			Assert.Equal(dominio.Pais, dto.Pais);
-			Assert.Equal(dominio.Validade, dto.Validade);
+			Assert.Equal(dominio.Validade.ToString("yyyy-MM-dd"), dto.Validade);
 		}
 
 		public static IEnumerable<object[]> DadosPraTestesException =>
@@ -35,7 +35,7 @@ namespace Bike.Testes.Unidade.Dominio
 		[MemberData(nameof(DadosPraTestesException))]
 		public void ObterExceptionAoCriarPassaporteComValoresNulosOuVazios(string numero, string pais, DateTime validade, string erro)
 		{
-			var dto = new PassaporteDto() { Numero = numero, Validade = validade, Pais = pais };
+			var dto = new PassaporteDto() { Numero = numero, Validade = validade.ToString("yyyy-MM-dd"), Pais = pais };
 
 			var exception = Assert.Throws<ArgumentException>(() => new Passaporte(dto));
 			Assert.Equal(erro, exception.Message);

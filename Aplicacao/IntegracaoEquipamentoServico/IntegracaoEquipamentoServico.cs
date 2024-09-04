@@ -15,7 +15,9 @@ namespace BikeApi.Aplicacao.AluguelServico
 			{
 				try
 				{
-					HttpResponseMessage response = client.GetAsync(urlEquipamento + $"tranca/{idTranca}/bicicleta").GetAwaiter().GetResult();
+					var url = urlEquipamento + $"tranca/{idTranca}/bicicleta";
+
+					HttpResponseMessage response = client.GetAsync(url).GetAwaiter().GetResult();
 					response.EnsureSuccessStatusCode();
 
 					return JsonSerializer.Deserialize<BicicletaDto>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult())!;

@@ -68,7 +68,7 @@ namespace BikeApi.Dominio.Ciclista
 		private void PreencherCamposBasicos(CiclistaDto dto)
 		{
 			this.Nome = dto.Nome!;
-			this.Nascimento = dto.Nascimento!.Value;
+			this.Nascimento = DateTime.ParseExact(dto.Nascimento!, "yyyy-MM-dd", null);
 			this.Cpf = dto.Cpf!;
 			this.Nacionalidade = dto.Nacionalidade!;
 			this.Email = dto.Email!;
@@ -83,7 +83,7 @@ namespace BikeApi.Dominio.Ciclista
 				Id = this.Id,
 				Status = this.Status,
 				Nome = this.Nome,
-				Nascimento = this.Nascimento,
+				Nascimento = this.Nascimento.ToString("yyyy-MM-dd"),
 				Cpf = this.Cpf,
 				Nacionalidade = this.Nacionalidade,
 				Email = this.Email,
@@ -95,7 +95,7 @@ namespace BikeApi.Dominio.Ciclista
 				dto.Passaporte = new()
 				{
 					Numero = this.Passaporte.Numero,
-					Validade = this.Passaporte.Validade,
+					Validade = this.Passaporte.Validade.ToString("yyyy-MM-dd"),
 					Pais = this.Passaporte.Pais
 				};
 			}

@@ -14,7 +14,7 @@ namespace Bike.Testes.Unidade.Dominio
 				NomeTitular = "Nome Titular",
 				Numero = "1234567890123456",
 				Cvv = "123",
-				Validade = DateTime.Now.AddYears(1),
+				Validade = DateTime.Now.AddYears(1).ToString("yyyy-MM-dd"),
 			};
 
 			var dominio = new MeioDePagamento(dto);
@@ -22,7 +22,7 @@ namespace Bike.Testes.Unidade.Dominio
 			Assert.Equal(dto.NomeTitular, dominio.NomeTitular);
 			Assert.Equal(dto.Numero, dominio.Numero);
 			Assert.Equal(dto.Cvv, dominio.Cvv);
-			Assert.Equal(dto.Validade, dominio.Validade);
+			Assert.Equal(dto.Validade, dominio.Validade.ToString("yyyy-MM-dd"));
 
 			Assert.Equal(0, dominio.Id);
 			Assert.Equal(0, dominio.IdCiclista);
@@ -61,7 +61,7 @@ namespace Bike.Testes.Unidade.Dominio
 		[MemberData(nameof(DadosPraTestesException))]
 		public void ObterExceptionAoCriarMeioDePagamentoComValoresNulosOuVazios(string nome, string numero, string cvv, DateTime validade, string erro)
 		{
-			var dto = new MeioDePagamentoDto() { NomeTitular = nome, Numero = numero, Cvv = cvv, Validade = validade, };
+			var dto = new MeioDePagamentoDto() { NomeTitular = nome, Numero = numero, Cvv = cvv, Validade = validade.ToString("yyyy-MM-dd"), };
 
 			var exception = Assert.Throws<ArgumentException>(() => new MeioDePagamento(dto));
 			Assert.Equal(erro, exception.Message);

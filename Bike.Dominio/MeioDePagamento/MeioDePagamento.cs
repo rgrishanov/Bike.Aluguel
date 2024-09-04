@@ -19,7 +19,7 @@ namespace BikeApi.Dominio.MeioDePagamento
 
 			NomeTitular = dto.NomeTitular;
 			Numero = dto.Numero;
-			Validade = dto.Validade;
+			Validade = DateTime.ParseExact(dto.Validade!, "yyyy-MM-dd", null);
 			Cvv = dto.Cvv;
 		}
 
@@ -46,7 +46,7 @@ namespace BikeApi.Dominio.MeioDePagamento
 				Id = this.Id,
 				NomeTitular = this.NomeTitular,
 				Numero = this.Numero,
-				Validade = this.Validade,
+				Validade = this.Validade.ToString("yyyy-MM-dd"),
 				Cvv = this.Cvv
 			};
 		}

@@ -15,7 +15,7 @@ namespace Bike.Testes.Unidade.Dominio
 				Nome = "Ciclista Teste",
 				Email = "ciclista@email.com",
 				Nacionalidade = "BRASILEIRO",
-				Nascimento = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+				Nascimento = "1990-01-01",
 				Senha = "123456",
 				ConfirmacaoSenha = "123456",
 				UrlFotoDocumento = "http://url.com/foto"
@@ -27,7 +27,7 @@ namespace Bike.Testes.Unidade.Dominio
 			Assert.Equal(dto.Nome, dominioBr.Nome);
 			Assert.Equal(dto.Email, dominioBr.Email);
 			Assert.Equal(dto.Nacionalidade, dominioBr.Nacionalidade);
-			Assert.Equal(dto.Nascimento, dominioBr.Nascimento);
+			Assert.Equal(dto.Nascimento, dominioBr.Nascimento.ToString("yyyy-MM-dd"));
 			dominioBr.Passaporte.Should().BeNull();
 			Assert.Equal(dto.Senha, dominioBr.Senha);
 			Assert.Equal(dto.UrlFotoDocumento, dominioBr.UrlFotoDocumento);
@@ -39,7 +39,7 @@ namespace Bike.Testes.Unidade.Dominio
 			{
 				Numero = "1234567890123456",
 				Pais = "Brasil",
-				Validade = DateTime.Now.AddYears(1),
+				Validade = DateTime.Now.AddYears(1).ToString("yyyy-MM-dd"),
 			};
 			dto.Nacionalidade = "ESTRANGEIRO";
 			dto.Cpf = null;
@@ -50,7 +50,7 @@ namespace Bike.Testes.Unidade.Dominio
 			Assert.Equal(dto.Nome, dominioEs.Nome);
 			Assert.Equal(dto.Email, dominioEs.Email);
 			Assert.Equal(dto.Nacionalidade, dominioEs.Nacionalidade);
-			Assert.Equal(dto.Nascimento, dominioEs.Nascimento);
+			Assert.Equal(dto.Nascimento, dominioEs.Nascimento.ToString("yyyy-MM-dd"));
 			Assert.Equal(dto.Senha, dominioEs.Senha);
 			Assert.Equal(dto.UrlFotoDocumento, dominioEs.UrlFotoDocumento);
 			Assert.Equal("AGUARDANDO_CONFIRMACAO", dominioEs.Status);
@@ -59,14 +59,14 @@ namespace Bike.Testes.Unidade.Dominio
 			dominioEs.Passaporte.Should().NotBeNull();
 			dominioEs.Passaporte!.Numero.Should().Be(dto.Passaporte!.Numero);
 			dominioEs.Passaporte!.Pais.Should().Be(dto.Passaporte!.Pais);
-			dominioEs.Passaporte!.Validade.Should().Be(dto.Passaporte!.Validade);
+			dominioEs.Passaporte!.Validade.ToString("yyyy-MM-dd").Should().Be(dto.Passaporte!.Validade);
 
 			var dtoRetornoEs = dominioEs.MapearParaDto();
 			dtoRetornoEs.Should().NotBeNull();
 			dtoRetornoEs.Cpf.Should().BeNull();
 			dtoRetornoEs.Passaporte!.Numero.Should().Be(dominioEs.Passaporte.Numero);
 			dtoRetornoEs.Passaporte!.Pais.Should().Be(dominioEs.Passaporte.Pais);
-			dtoRetornoEs.Passaporte!.Validade.Should().Be(dominioEs.Passaporte.Validade);
+			dtoRetornoEs.Passaporte!.Validade.Should().Be(dominioEs.Passaporte.Validade.ToString("yyyy-MM-dd"));
 
 			Assert.Equal(0, dominioBr.Id);
 			Assert.Equal(0, dominioEs.Id);
@@ -96,7 +96,7 @@ namespace Bike.Testes.Unidade.Dominio
 				Nome = "Ciclista Teste Alterado",
 				Email = "ciclista@email.alterado.com",
 				Nacionalidade = "BRASILEIRO",
-				Nascimento = new DateTime(1992, 6, 6, 0, 0, 0, DateTimeKind.Utc),
+				Nascimento = "1992-06-06",
 				Senha = "123456!@#",
 				ConfirmacaoSenha = "123456!@#",
 				UrlFotoDocumento = "http://url.com/foto/Alterada.jpg"
@@ -109,7 +109,7 @@ namespace Bike.Testes.Unidade.Dominio
 			Assert.Equal(dtoAlteracao.Nome, dominioBr.Nome);
 			Assert.Equal(dtoAlteracao.Email, dominioBr.Email);
 			Assert.Equal(dtoAlteracao.Nacionalidade, dominioBr.Nacionalidade);
-			Assert.Equal(dtoAlteracao.Nascimento, dominioBr.Nascimento);
+			Assert.Equal(dtoAlteracao.Nascimento, dominioBr.Nascimento.ToString("yyyy-MM-dd"));
 			dominioBr.Passaporte.Should().BeNull();
 			Assert.Equal(dtoAlteracao.UrlFotoDocumento, dominioBr.UrlFotoDocumento);
 			Assert.Equal("ATIVO", dominioBr.Status);
@@ -120,7 +120,7 @@ namespace Bike.Testes.Unidade.Dominio
 		{
 			Numero = "1234567890123456",
 			Pais = "Brasil",
-			Validade = DateTime.Now.AddYears(1),
+			Validade = DateTime.Now.AddYears(1).ToString("yyyy-MM-dd"),
 		};
 
 		public static IEnumerable<object[]> DadosPraTestesException =>
@@ -166,7 +166,7 @@ namespace Bike.Testes.Unidade.Dominio
 				Nome = nome,
 				Email = email,
 				Nacionalidade = nacionalidade,
-				Nascimento = nascimento,
+				Nascimento = nascimento.ToString("yyyy-MM-dd"),
 				Senha = senha,
 				ConfirmacaoSenha = confirmacaoSenha,
 				UrlFotoDocumento = urlFotoDocumento,

@@ -15,11 +15,22 @@ namespace BikeApi.Aplicacao.AluguelServico
 			{
 				try
 				{
-					StringContent content = new StringContent(JsonSerializer.Serialize(meioDePagamento), Encoding.UTF8, "application/json");
+					string jsonString = string.Format(@"{{
+								""nomeTitular"": ""{0}"",
+								""numero"": ""{1}"",
+								""validade"": ""{2}"",
+								""cvv"": ""{3}""
+							}}", meioDePagamento.NomeTitular, meioDePagamento.Numero, meioDePagamento.Validade.ToString("yyyy-MM-dd"), meioDePagamento.Cvv);
 
-					return client.PostAsync(urlServicoExterno + "validaCartaoDeCredito", content).GetAwaiter().GetResult().IsSuccessStatusCode;
+					StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+					var result = client.PostAsync(urlServicoExterno + "validaCartaoDeCredito", content).GetAwaiter().GetResult();
+
+					var retorno = result.Content.ReadAsStringAsync();
+
+					return result.IsSuccessStatusCode;
 				}
-				catch (Exception ex)
+				catch
 				{
 					return false;
 				}

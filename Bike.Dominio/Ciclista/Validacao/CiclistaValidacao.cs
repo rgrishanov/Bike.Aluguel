@@ -11,9 +11,9 @@ namespace Bike.Dominio.Ciclista.Validacao
 			this.RuleFor(x => x.Nome)
 				.NotEmpty().WithMessage("Nome do Ciclista não pode ser vazio");
 
-			this.RuleFor(x => x.Nascimento)
+			this.RuleFor(x => DateTime.ParseExact(x.Nascimento!, "yyyy-MM-dd", null))
 				.LessThan(DateTime.Now)
-				.WithMessage("Data de Nascimento do Ciclista deve ser anterior a hoje").Unless(x => x.Nascimento < new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+				.WithMessage("Data de Nascimento do Ciclista deve ser anterior a hoje").Unless(x => DateTime.ParseExact(x.Nascimento!, "yyyy-MM-dd", null) < new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc))
 
 				.GreaterThan(new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc))
 				.WithMessage("Data de Nascimento do Ciclista deve ser no século 20 ou 21");
